@@ -1,5 +1,5 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin'); // html-webpack-plugin
 
 module.exports = {
   mode: 'development',
@@ -11,8 +11,11 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
+  devServer: { // webpack-dev-server
+    contentBase: path.resolve(__dirname, 'public')
+  },
   plugins: [
-    new HtmlWebpackPlugin({
+    new HtmlWebpackPlugin({ // html-webpack-plugin
       template: path.resolve(__dirname, 'public', 'index.html'),
     })
   ],
@@ -21,7 +24,7 @@ module.exports = {
       {
         test: /\.jsx$/,
         exclude: /node_modules/,
-        use: 'babel-loader',
+        use: 'babel-loader', //babel-loader
       }
     ],
   }
