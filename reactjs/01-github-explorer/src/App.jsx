@@ -1,3 +1,5 @@
 export function App() {
-  return <h1>Hello ReactJS</h1>
+
+  throw new Error('Eita Giovana, o forninho caiu!');
+
 }
