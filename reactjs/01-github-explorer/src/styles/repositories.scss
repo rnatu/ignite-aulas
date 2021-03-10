@@ -9,13 +9,13 @@ section.repository-list {
     list-style: none;
 
     li {
-      & + li{
+      & + li {
         margin-top: 16px;
       }
     }
 
     p {
-      font-size:  14px;
+      font-size: 14px;
       color: #444;
       margin-top: 8px;
     }
