@@ -5,13 +5,16 @@ import { createServer, Model } from 'miragejs';
 
 import { App } from "./App";
 
+//miragejs
 createServer({
 
+  //"banco de dados transaction"
   models: {
     transaction: Model,
   },
 
   seeds(server) {
+    //fazendo um mock do load de dados do db
     server.db.loadData({
       transactions: [
         {
@@ -39,6 +42,7 @@ createServer({
 
     //rota de get
     this.get('/transactions', () => {
+      //retornando todos os resultados do schema(banco de dados server)
       return this.schema.all('transaction')
     })
 
