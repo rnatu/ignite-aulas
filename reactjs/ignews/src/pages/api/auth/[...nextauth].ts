@@ -23,11 +23,30 @@ export default NextAuth({
       const { email } = user;
 
       try {
+        //fql - fauna query language
+        //https://docs.fauna.com/fauna/current/api/fql/cheat_sheet
         await fauna.query(
-          //fql - fauna query language
-          //https://docs.fauna.com/fauna/current/api/fql/cheat_sheet
-          //https://docs.fauna.com/fauna/current/api/fql/functions/create?lang=javascript
-          q.Create(q.Collection("users"), { data: { email } })
+          //todo if no fauna, obrigatóriamente tem de ter um else, que no caso é o get
+          q.If(
+            q.Not(
+              q.Exists(
+                //como se fosse um WHERE
+                q.Match(
+                  // faz a busca pelo index no faunaDB
+                  // casefold normaliza o email em lowercase
+                  q.Index("user_by_email"), q.Casefold(user.email)
+                )
+              )
+            ),
+            //https://docs.fauna.com/fauna/current/api/fql/functions/create?lang=javascript
+            q.Create(q.Collection("users"), { data: { email } }),
+            //como se fosse um SELECT
+            q.Get(
+              q.Match(
+                q.Index("user_by_email"), q.Casefold(user.email)
+              )
+            )
+          )
         );
 
         return true;
