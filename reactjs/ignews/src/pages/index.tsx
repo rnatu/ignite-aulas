@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 
 import Head from "next/head";
 
@@ -44,7 +44,7 @@ export default function Home({ product }: HomeProps) {
 }
 
 // essa função é executada na camada de servidor do NextJS
-export const getServerSideProps: GetServerSideProps = async() => {
+export const getStaticProps: GetStaticProps = async() => {
 
   //utiliza o ID da API informado no site do stripe
   const price = await stripe.prices.retrieve('price_1IamcXA2Gj2Ei4q9VbZibtLz')
@@ -61,6 +61,8 @@ export const getServerSideProps: GetServerSideProps = async() => {
   return {
     props: {
       product
-    }
+    },
+    //quanto tempo em segundos a página deverá permanecer sem ser revalidada
+    revalidate: 60 * 60 * 24, // 24 hours
   }
 }
