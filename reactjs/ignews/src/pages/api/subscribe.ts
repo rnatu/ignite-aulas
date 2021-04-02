@@ -1,21 +1,64 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from 'next-auth/client'
+import { fauna } from "../../services/fauna";
+import { query as q } from 'faunaDB'
 import { stripe } from '../../services/stripe';
+
+type User = {
+  ref: {
+    id: string;
+  }
+  data: {
+    stripe_customer_id: string;
+  }
+}
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if(req.method === 'POST') {
     //criando o cliente (customer) dentro do painel do stripe
     const session = await getSession({ req });
 
-    const stripeCustomer = await stripe.customers.create({
-      //é obrigatório
-      email: session.user.email,
-      // metadata
-    })
+    //buscando o usuário no faunadb pela session do navegador
+    const user = await fauna.query<User>(
+      q.Get(
+        q.Match(
+          q.Index('user_by_email'),
+          q.Casefold(session.user.email)
+        )
+      )
+    )
+
+    //buscando a chave stripe_customer_id no faunaDB se existir, se não será undefined
+    let customerId = user.data.stripe_customer_id
+
+    //se for undefined
+    if(!customerId) {
+      //criando customer no stripe
+      const stripeCustomer = await stripe.customers.create({
+        //email é obrigatório
+        email: session.user.email,
+        // metadata
+      })
+
+      //criando uma nova chave em data no faunaDB com nome stripe_customer_id
+      //utilizando o valor como o id gerado automaticamente no stripe obtido acima (stripeCustomer-)
+      await fauna.query(
+        q.Update(
+          q.Ref(q.Collection('users'), user.ref.id),
+          {
+            data: {
+              stripe_customer_id: stripeCustomer.id
+            }
+          }
+        )
+      )
+
+      customerId = stripeCustomer.id
+    }
 
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
       //id do customer criado no painel do stripe
-      customer: stripeCustomer.id,
+      customer: customerId,
       payment_method_types: ['card'],
       //obrigar o usuário a preencher o endereço
       billing_address_collection: 'required',
