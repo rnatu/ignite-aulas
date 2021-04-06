@@ -38,8 +38,8 @@ export default NextAuth({
                 )
               )
             ),
-            //https://docs.fauna.com/fauna/current/api/fql/functions/create?lang=javascript
-            q.Create(q.Collection("users"), { data: { email } }),
+              //https://docs.fauna.com/fauna/current/api/fql/functions/create?lang=javascript
+              q.Create(q.Collection("users"), { data: { email } }),
             //como se fosse um SELECT e o ELSE do If
             q.Get(
               q.Match(

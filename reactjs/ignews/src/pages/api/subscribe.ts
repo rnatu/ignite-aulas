@@ -15,7 +15,7 @@ type User = {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if(req.method === 'POST') {
-    //criando o cliente (customer) dentro do painel do stripe
+
     const session = await getSession({ req });
 
     //buscando o usuário no faunadb pela session do navegador
