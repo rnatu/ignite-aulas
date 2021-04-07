@@ -14,13 +14,11 @@ export function ActiveLink({children, activeClassName, ...rest}: ActiveLinkProps
     ? activeClassName
     : '';
 
-    console.log(className)
-
   return (
     <Link {...rest}>
       {/* clonando o elemento e adicionando atributos ao mesmo */}
       {cloneElement(children, {
-        class: className,
+        className,
       })}
     </Link>
   )
