@@ -11,6 +11,7 @@ export function SubscribeButton({ priceId }: SubscribeButtonProps) {
   const [session] = useSession();
 
   async function handleSubscribe() {
+
     if(!session) {
       //github, pois no api/auth/[...nextauth] o provider utilizado é o github
       signIn('github');
@@ -29,8 +30,6 @@ export function SubscribeButton({ priceId }: SubscribeButtonProps) {
     } catch (err) {
       console.log(err)
     }
-
-
   }
 
   return (
@@ -43,7 +42,3 @@ export function SubscribeButton({ priceId }: SubscribeButtonProps) {
     </button>
   );
 }
-function alert(message: any) {
-  throw new Error('Function not implemented.');
-}
-

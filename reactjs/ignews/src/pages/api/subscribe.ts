@@ -16,9 +16,10 @@ type User = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if(req.method === 'POST') {
 
+    //informações do usuário logado na aplicação
     const session = await getSession({ req });
 
-    //buscando o usuário no faunadb pela session do navegador
+    //buscando os dados do usuário no faunadb pela session obtida pelo navegador (next/auth)
     const user = await fauna.query<User>(
       q.Get(
         q.Match(
