@@ -46,7 +46,7 @@ export default function Home({ product }: HomeProps) {
 // essa função é executada na camada de servidor do NextJS
 export const getStaticProps: GetStaticProps = async() => {
 
-  //utiliza o ID da API informado no site do stripe
+  //utiliza o Price ID da API informado na parte de products do stripe
   const price = await stripe.prices.retrieve('price_1IamcXA2Gj2Ei4q9VbZibtLz')
 
   const product = {
