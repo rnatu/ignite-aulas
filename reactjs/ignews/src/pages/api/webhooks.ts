@@ -24,6 +24,8 @@ export const config = {
 
 const relevantEvents = new Set([
   "checkout.session.completed",
+  "customer.subscription.updated",
+  "customer.subscription.deleted",
 ]);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -37,6 +39,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       event = stripe.webhooks.constructEvent(
         buf,
         secret,
+        // no powershell, para deixar o listen de weebhooks ativos
+        // stripe listen --forward-to localhost:3000/api/webhooks
         process.env.STRIPE_WEBHOOK_SECRET
       );
     } catch (err) {
@@ -48,12 +52,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (relevantEvents.has(type)) {
       try {
         switch (type) {
+          case 'customer.subscription.updated':
+          case 'customer.subscription.deleted':
+            const subscription = event.data.object as Stripe.Subscription;
+
+            await saveSubscription(
+              // id da inscrição
+              subscription.id,
+              // id do usuário
+              subscription.customer.toString(),
+              false,
+            )
+
           case 'checkout.session.completed':
             const checkoutSession = event.data.object as Stripe.Checkout.Session
 
             await saveSubscription(
+              // id da inscrição
               checkoutSession.subscription.toString(),
-              checkoutSession.customer.toString()
+              // id do usuário
+              checkoutSession.customer.toString(),
+              true,
             )
 
             break

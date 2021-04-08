@@ -44,6 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       //criando uma nova chave em data no faunaDB com nome stripe_customer_id
       //utilizando o valor como o id gerado automaticamente no stripe obtido acima (stripeCustomer-)
       await fauna.query(
+        //atualiza um campo no faunaDB
         q.Update(
           q.Ref(q.Collection('users'), user.ref.id),
           {

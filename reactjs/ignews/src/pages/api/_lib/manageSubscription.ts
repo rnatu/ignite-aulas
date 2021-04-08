@@ -4,7 +4,8 @@ import { stripe } from "../../../services/stripe";
 
 export async function saveSubscription(
   subscriptionId: string,
-  customerId: string
+  customerId: string,
+  createAction = false,
 ) {
   // Buscar o campo ref no faunaDB para o usuário que tiver match no customerId recebido e o stripe_customer_id no fauna
   // Foi criado um index no faunaDB para essa busca -> user_by_stripe_customer_id
@@ -22,7 +23,7 @@ export async function saveSubscription(
   // Obter dados do customer através do subscriptionId
   const subscription = await stripe.subscriptions.retrieve(subscriptionId)
 
-  // Salvar os dados da subscription do usuário no FaunaDB
+  // Cria o objeto com o dados para serem enviados ao faunaDB
   const subscriptionData = {
     id: subscription.id,
     userId: userRef,
@@ -30,10 +31,36 @@ export async function saveSubscription(
     price_id: subscription.items.data[0].price.id,
   }
 
-  await fauna.query(
-    q.Create(
-      q.Collection('subscriptions'),
-      { data: subscriptionData }
+  if(createAction) {
+    await fauna.query(
+      // Criar os dados no FaunaDB
+      q.Create(
+        //seleciona a collection, e envia dentro de data para ref que será criada o objeto subscriptionData
+        q.Collection('subscriptions'),
+        { data: subscriptionData }
+      )
     )
-  )
+  } else {
+    await fauna.query(
+      //É utilizado o replace ao invés de update neste caso, pois se posteriormente precisarmos
+      //atualizar mais de algum campo de uma só vez, o replace já faz isso, substituindo
+      //todos os dados
+
+      //substitui todos valores no faunaDB
+      q.Replace(
+        //seleciona/encontra o campo "ref" em (resultado do match)
+        q.Select(
+          "ref",
+          q.Get(
+            q.Match(
+              //faz o match entre o index e o subscriptionId
+              q.Index('subscription_by_id'), subscriptionId
+            )
+          )
+        ),
+        //a partir do ref selecionado, quais dados deseja substituir por novos dados
+        { data: subscriptionData }
+      )
+    )
+  }
 }
