@@ -5,6 +5,7 @@ export function getPrismicClient(req?: unknown) {
     //endereço da aplicação no prismic
     process.env.PRISMIC_ENDPOINT,
     {
+      //req é utilizado em serverSideProps
       req,
       accessToken: process.env.PRISMIC_ACCESS_TOKEN
     }

@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
   //yarn add -D @types/next-auth@3.7.1
   //reload no vscode caso o activeSubscription esteja dando erro no typeScript
   //activeSubscription setado no /auth/[...nextauth].ts
-  if(!session.activeSubscription) {
+  if(!session?.activeSubscription) {
     //redirecionando caso não tenha uma subscription ativa pelo getServerSideProps
     return {
       redirect: {
