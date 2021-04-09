@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, params }) =>
     //redirecionando caso não tenha uma subscription ativa pelo getServerSideProps
     return {
       redirect: {
-        destination: '/',
+        destination: `/posts/preview/${slug}`,
         permanent: false,
       }
     }
