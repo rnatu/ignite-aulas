@@ -1,4 +1,4 @@
-import { Flex, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Flex, useBreakpointValue } from '@chakra-ui/react';
 
 import { Logo } from './Logo';
 import { NotificationsNav } from './NotificationsNav';
@@ -28,6 +28,7 @@ export function Header() {
         <NotificationsNav />
         <Profile showProfileData={isWideVersion}/>
       </Flex>
+
     </Flex>
   );
 }
