@@ -13,6 +13,7 @@ export function Pagination() {
       <Box>
         <strong>0</strong> - <strong>10</strong> de 100
       </Box>
+
       <Stack direction="row" spacing="2">
         <Button
           size="sm"
