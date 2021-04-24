@@ -1,4 +1,4 @@
-import { query as q, query } from "faunadb";
+import { query as q } from "faunadb";
 import { fauna } from "../../../services/fauna";
 import { stripe } from "../../../services/stripe";
 
