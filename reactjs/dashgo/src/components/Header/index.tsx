@@ -14,6 +14,7 @@ export function Header() {
     base: false,
     lg: true,
   })
+
   return (
     <Flex
       as="header"
@@ -25,7 +26,6 @@ export function Header() {
       px="6"
       align="center"
     >
-
       { !isWideVersion && (
         <IconButton
           aria-label="Open navigation" //necessário para acessibilidade
@@ -34,9 +34,7 @@ export function Header() {
           variant="unstyled"
           onClick={onOpen}
           mr="2"
-        >
-
-        </IconButton>
+         />
       )}
       <Logo />
       {isWideVersion && <SearchBox />}
