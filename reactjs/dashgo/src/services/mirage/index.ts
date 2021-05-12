@@ -25,13 +25,14 @@ export function makeServer() {
         },
         //pode ser em camelCase pois o mirage ira converter para snake_case
         createdAt() {
+          //cria aleatóriamente nos últimos 10 dias
           return faker.date.recent(10);
         },
       })
     },
     //geração de dados iniciais
     seeds(server) {
-      server.createList('user', 200)
+      server.createList('user', 10)
     },
 
     routes() {
