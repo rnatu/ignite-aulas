@@ -2,35 +2,14 @@ import { Box, Spinner, Button, Checkbox, Flex, Heading, Icon, Table, Tbody, Td, 
 import Link from "next/link";
 import React from "react";
 import { RiAddLine } from "react-icons/ri";
-import { useQuery } from 'react-query';
-
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { SideBar } from "../../components/Sidebar";
-import { api } from "../../services/api";
+import { useUsers } from "../../services/hooks/useUsers";
 
 export default function UserList() {
   //user é chave, como a chave usada no localStorage
-  const { data, isLoading, error, isFetching } = useQuery('users', async () => {
-    const { data } = await api.get('users')
-
-    const users = data.users.map(user => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
-        })
-      };
-    });
-
-    return users;
-  }, {
-    staleTime: 1000 * 5, //5 seconds
-  })
+  const { data, isLoading, error, isFetching } = useUsers()
 
   const isWideVersion = useBreakpointValue({
     base: false,
