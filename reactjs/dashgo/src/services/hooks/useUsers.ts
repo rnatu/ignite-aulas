@@ -56,13 +56,15 @@ export function useUsers(page: number) {
     Pois assim, a page irá mudar, forçando o react query a atualizar a
     consulta dos dados
 
-    assim ele guarda em cache os usuários e a página neste caso
+    assim ele guarda em cache os usuários para cada página
 
     *Aula 'trocando de página'
   */
 
   return useQuery(['users', page], () => getUsers(page), {
-    staleTime: 1000 * 5, //5 seconds
+
+    //tempo que os dados permaneceram "fresh"
+    staleTime: 1000 * 60 * 10 // 10 minutes
   })
 
 }

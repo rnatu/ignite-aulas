@@ -64,6 +64,9 @@ export function makeServer() {
 
       });
 
+      //shorthand para listar usuários pelo id
+      this.get('/users/:id');
+
       this.post("/users");
 
       // resetando o namespace após utilização para não conflitar com a api routes do next
