@@ -1,4 +1,5 @@
 import { Box, Spinner, Button, Checkbox, Flex, Heading, Icon, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue, Link } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
 import NextLink from "next/link";
 import { useState } from "react";
 import { RiAddLine } from "react-icons/ri";
@@ -7,13 +8,18 @@ import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { SideBar } from "../../components/Sidebar";
 import { api } from "../../services/api";
-import { useUsers } from "../../services/hooks/useUsers";
+import { getUsers, useUsers } from "../../services/hooks/useUsers";
 import { queryClient } from "../../services/queryClient";
 
-export default function UserList() {
+export default function UserList({ users }) {
   const [page, setPage] = useState(1);
-
   const { data, isLoading, error, isFetching } = useUsers(page)
+
+  //utilizando ssr
+  // const { data, isLoading, error, isFetching } = useUsers(page, {
+  //   initialData: users,
+  // })
+
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -120,3 +126,14 @@ export default function UserList() {
     </Box>
   );
 }
+
+//SSR
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const { users, totalCount } = await getUsers(1);
+
+//   return {
+//     props: {
+//       users,
+//     }
+//   }
+// }
