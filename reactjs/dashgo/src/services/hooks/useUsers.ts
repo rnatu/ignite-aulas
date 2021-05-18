@@ -8,8 +8,20 @@ type User = {
   createdAt: string;
 }
 
-export async function getUsers(): Promise<User[]> {
-  const { data } = await api.get('users')
+type GetUsersResponse = {
+  totalCount: number;
+  users: User[];
+}
+
+export async function getUsers(page: number): Promise<GetUsersResponse> {
+
+  const { data, headers } = await api.get('users', {
+    params: {
+      page,
+    }
+  })
+
+  const totalCount = Number(headers['x-total-count'])
 
   const users = data.users.map(user => {
     return {
@@ -24,11 +36,32 @@ export async function getUsers(): Promise<User[]> {
     };
   });
 
-  return users;
+  return {
+    users,
+    totalCount
+  };
 }
 
-export function useUsers() {
-  return useQuery('users', getUsers, {
+export function useUsers(page: number) {
+  /*
+    'users' funciona como uma chave, igual no localStorage
+    Porem, como o react-query usa o cache de informação,
+    somente utilizando useQuery('users', () => ...), a paginação
+    não irá funcionar, pois ele não ira realizar a consulta dos dados novamente
+    quando clicado em uma nova página, pois irá verificar que os
+    dados já estão em cache
+
+    Por isso é utilizado uma "chave composta" ficando
+    useQuery(['users', page], () => ...)
+    Pois assim, a page irá mudar, forçando o react query a atualizar a
+    consulta dos dados
+
+    assim ele guarda em cache os usuários e a página neste caso
+
+    *Aula 'trocando de página'
+  */
+
+  return useQuery(['users', page], () => getUsers(page), {
     staleTime: 1000 * 5, //5 seconds
   })
 
