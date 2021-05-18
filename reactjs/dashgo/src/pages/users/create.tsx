@@ -12,10 +12,15 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import { Input } from "../../components/Form/Input";
+import { useMutation } from 'react-query'
+import { useRouter } from "next/router";
 
+
+import { Input } from "../../components/Form/Input";
 import { Header } from "../../components/Header";
 import { SideBar } from "../../components/Sidebar";
+import { api } from "../../services/api";
+import { queryClient } from "../../services/queryClient";
 
 type CreateUserFormData = {
   name: string;
@@ -39,6 +44,27 @@ const createUserFormSchema = yup.object().shape({
 });
 
 export default function CreateUser() {
+  const router = useRouter();
+
+  //aqui diferente do useQuery, o hook UseMutation não precisa de um nome de uma "chave", pois os dados não serão utilizados em cache
+  const createUser = useMutation(async (user: CreateUserFormData) => {
+    //rota /users, porem não precisa da /
+    const response = await api.post('users', {
+      user: {
+        ...user,
+        //o ActiveModelSerializer faz a conversão automática para camelCase quando recebe os dados
+        created_at: new Date(),
+      }
+    })
+
+    return response.data.user;
+  }, {
+    onSuccess: () => {
+      //invalidando o cache das queries de users, para que o cache seja atualizado
+      queryClient.invalidateQueries('users')
+    }
+  })
+
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createUserFormSchema),
   });
@@ -48,11 +74,9 @@ export default function CreateUser() {
   const handleCreateUser: SubmitHandler<CreateUserFormData> = async (
     values, event
   ) => {
-    await new Promise((resolve) => {
-      setTimeout(resolve, 2000);
-    })
+    await createUser.mutateAsync(values);
 
-    console.log(values);
+    router.push('/users')
   };
 
   return (

@@ -15,6 +15,7 @@ type GetUsersResponse = {
 
 export async function getUsers(page: number): Promise<GetUsersResponse> {
 
+  //rota /users, porem não precisa da /
   const { data, headers } = await api.get('users', {
     params: {
       page,
