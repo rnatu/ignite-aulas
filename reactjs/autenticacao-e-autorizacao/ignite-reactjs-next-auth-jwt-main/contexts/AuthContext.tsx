@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import Router from 'next/router';
+import Router from "next/router";
 import { api } from "../services/api";
-import { setCookie, parseCookies } from 'nookies'
+import { setCookie, parseCookies, destroyCookie } from "nookies";
 
 type User = {
   email: string;
@@ -27,6 +27,14 @@ type AuthProviderProps = {
 //Context
 export const AuthContext = createContext({} as AuthContextData);
 
+export function signOut() {
+  //undefined, pois está sendo setado pelo lado do browser
+  destroyCookie(undefined, "nextauth.token");
+  destroyCookie(undefined, "nextauth.refreshToken");
+
+  Router.push("/");
+}
+
 //Provider Context
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>();
@@ -34,19 +42,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const cookies = parseCookies();
-    const token = cookies['nextauth.token']
-    
+    const token = cookies["nextauth.token"];
+
     if (token) {
-      api.get('/me').then((response => {
-        const { email, permissions, roles } = response.data;
-        setUser({
-          email, 
-          permissions, 
-          roles
+      api
+        .get("/me")
+        .then((response) => {
+          const { email, permissions, roles } = response.data;
+          setUser({
+            email,
+            permissions,
+            roles,
+          });
         })
-      }))
+        .catch(() => {
+          signOut();
+        });
     }
-  }, [])
+  }, []);
 
   async function signIn({ email, password }) {
     try {
@@ -58,17 +71,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const { token, refreshToken, permissions, roles } = response.data;
 
       //undefined, pois está sendo setado pelo lado do browser
-      setCookie(undefined, 'nextauth.token', token, {
+      setCookie(undefined, "nextauth.token", token, {
         //por quanto tempo manter o cookie salvo no navegador, porem a renovação ou controle mesmo antes de expirar é feita pelo back-end
         maxAge: 60 * 60 * 24 * 30, //30 days
         // quais caminhos da aplicação vão ter acesso a esse cookie, colocando '/', voce informa que todos os endereços vao ter acesso. Uma forma de utilizar o cookie globalmente na aplicação
-        path: '/'
-      })
+        path: "/",
+      });
 
-      setCookie(undefined, 'nextauth.refreshToken', refreshToken, {
+      setCookie(undefined, "nextauth.refreshToken", refreshToken, {
         maxAge: 60 * 60 * 24 * 30, //30 days
-        path: '/'
-      })
+        path: "/",
+      });
 
       setUser({
         email,
@@ -76,9 +89,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         roles,
       });
 
-      api.defaults.headers['Authorization'] = `Bearer ${token}`
+      api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-      Router.push('/dashboard');
+      Router.push("/dashboard");
     } catch (err) {
       console.log(err);
     }

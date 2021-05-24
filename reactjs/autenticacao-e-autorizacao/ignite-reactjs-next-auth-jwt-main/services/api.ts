@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { parseCookies, setCookie } from "nookies";
+import { signOut } from "../contexts/AuthContext";
 
 let cookies = parseCookies();
 let isRefreshing = false;
@@ -63,9 +64,8 @@ api.interceptors.response.use(
             .finally(() => {
               isRefreshing = false;
             });
-          }
-          
-          console.log('ok')
+        }
+
         return new Promise((resolve, reject) => {
           failedRequestQueue.push({
             onSuccess: (token: string) => {
@@ -80,7 +80,9 @@ api.interceptors.response.use(
         });
       } else {
         //deslogar o usuário
+        signOut();
       }
     }
-  }
-);
+
+    return Promise.reject(error);
+});
