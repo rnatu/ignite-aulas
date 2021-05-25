@@ -45,7 +45,7 @@ export default function Home() {
 }
 
 export const getServerSideProps = withSSRGuest<{ users: string[] }>(
-  async (context) => {
+  async () => {
     return {
       props: {
         users: ["asda", "hsadujsdh"],
