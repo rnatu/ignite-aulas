@@ -1,30 +1,43 @@
-import { FormEvent, useContext, useState } from 'react'
-import styles from '../styles/Home.module.css'
+import { FormEvent, useContext, useState } from "react";
+import styles from "../styles/Home.module.css";
 
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Home() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const { signIn } = useContext(AuthContext)
+  const { signIn } = useContext(AuthContext);
 
   async function handleSubmit(event: FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
     const data = {
       email,
-      password
-    }
+      password,
+    };
 
-    await signIn(data)
+    await signIn(data);
   }
- 
-  return (
-    <form onSubmit={handleSubmit} className={styles.container}>
-     <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
-     <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
 
-     <button type="submit">Entrar</button>
-    </form>
-  )
+  return (
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.formContainer}>
+        <h1>Efetue seu login</h1>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  );
 }
