@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 
 import { AuthContext } from "../contexts/AuthContext";
 import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
+import { withSSRGuest } from "../utils/withSSRGuest";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -44,20 +44,12 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  //pelo lado do servidor, o primeiro parâmetro de qualquer função do nookies, será o contexto, e não undefined como é utilizado no lado do browser
-  const cookies = parseCookies(context);
-
-  if(cookies["nextauth.token"]) {
+export const getServerSideProps = withSSRGuest<{ users: string[] }>(
+  async (context) => {
     return {
-      redirect: {
-        destination: '/dashboard',
-        permanent: false,
-      }
-    }
+      props: {
+        users: ["asda", "hsadujsdh"],
+      },
+    };
   }
-
-  return {
-    props: {}
-  }
-}
+);
