@@ -39,7 +39,7 @@ export default function Home() {
         />
 
         <button type="submit">Entrar</button>
-      </form>
+      </form>      
     </div>
   );
 }

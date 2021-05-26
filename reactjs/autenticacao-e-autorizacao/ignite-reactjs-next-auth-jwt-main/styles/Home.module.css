@@ -4,14 +4,12 @@
   width: 100vw;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .formContainer {
   padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 40rem;

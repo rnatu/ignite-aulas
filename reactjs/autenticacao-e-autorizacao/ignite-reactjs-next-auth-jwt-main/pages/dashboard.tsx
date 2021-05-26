@@ -1,4 +1,3 @@
-import { GetServerSidePropsContext } from "next";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { setupAPIClient } from "../services/api";
@@ -22,6 +21,7 @@ export const getServerSideProps = withSSRAuth(async (context) => {
   const apiClient = setupAPIClient(context);
 
   const response = await apiClient.get('/me');
+
   console.log(response.data);
  
   return {
