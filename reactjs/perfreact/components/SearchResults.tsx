@@ -14,7 +14,7 @@ export function SearchResults({ results }: SearchResultsProps) {
     <div>
       {results.map(product => {
         return (
-          <ProductItem product={product}/>
+          <ProductItem key={product.id} product={product}/>
         )
       })}
     </div>
