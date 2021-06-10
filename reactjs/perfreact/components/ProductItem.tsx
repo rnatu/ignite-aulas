@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 interface ProductItemProps {
   product: {
     id: number;
@@ -6,10 +8,20 @@ interface ProductItemProps {
   };
 }
 
-export function ProductItem({ product }: ProductItemProps) {
+export function ProductItemComponent({ product }: ProductItemProps) {
   return (
     <div>
       {product.title} - <strong>{product.price}</strong>
     </div>
   )
 }
+
+// shallow compare => comparação rasa
+// {} === {} // false
+// igualdade referencial
+
+// se não for passada a função de segundo parâmetro, o memo irá fazer uma comparação rasa, utilizando ===
+// e com objetos, essa comparação sempre retornará false, pois é realizada a igualdade referencial
+export const ProductItem = memo(ProductItemComponent, (prevProps, nextProps) => {
+  return Object.is(prevProps.product, nextProps.product) //se retornar true, não sera renderizado novamente
+})
