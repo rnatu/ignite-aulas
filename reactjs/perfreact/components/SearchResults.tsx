@@ -7,9 +7,10 @@ interface SearchResultsProps {
     price: number;
     title: string;
   }>;
+  onAddToWishlist: (id: number) => void;
 }
 
-export function SearchResults({ results }: SearchResultsProps) {
+export function SearchResults({ results, onAddToWishlist }: SearchResultsProps) {
   const totalPrice = useMemo(() => {
     return results.reduce((total, product) => {
       return total + product.price;
@@ -22,7 +23,13 @@ export function SearchResults({ results }: SearchResultsProps) {
       <h2>{totalPrice}</h2>
 
       {results.map((product) => {
-        return <ProductItem key={product.id} product={product} />;
+        return (
+        <ProductItem 
+          key={product.id} 
+          product={product}
+          onAddToWishlist={onAddToWishlist}
+        />
+        )
       })}
     </div>
   );
@@ -45,7 +52,17 @@ export function SearchResults({ results }: SearchResultsProps) {
 
 /*
   Principais situações para utilização do useMemo
+  Utilizado para "memorizar" um valor
+
   1 - Cálculos pesados
   2 - Igualdade referencial (quando a gente repassa aquela informação 
     a um componente filho )
+*/
+
+/*
+  Principais situações para utilização do useCallback
+  Utilizado para "memorizar" uma função
+  Adequando a igualdade referencial, que é o algorítimo utilizado pelo react para comparação
+
+  1 - Quando a função é passada para outros componentes, seja por prop drilling ou contexto
 */
