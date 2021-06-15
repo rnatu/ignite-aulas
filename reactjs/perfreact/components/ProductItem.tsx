@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic';
 
 import { AddProductToWishlistProps } from './AddProductToWishlist'
 
+import lodash from 'lodash';
+
 const AddProductToWishlist = dynamic<AddProductToWishlistProps>(() => {
   return import('./AddProductToWishlist').then(mod => mod.AddProductToWishlist)
 }, {
@@ -46,5 +48,5 @@ export function ProductItemComponent({ product, onAddToWishlist }: ProductItemPr
 // se não for passada a função de segundo parâmetro, o memo irá fazer uma comparação rasa, utilizando ===
 // e com objetos, essa comparação sempre retornará false, pois é realizada a igualdade referencial
 export const ProductItem = memo(ProductItemComponent, (prevProps, nextProps) => {
-  return Object.is(prevProps.product, nextProps.product) //se retornar true, não sera renderizado novamente
+  return lodash.isEqual(prevProps.product, nextProps.product) //se retornar true, não sera renderizado novamente
 })
