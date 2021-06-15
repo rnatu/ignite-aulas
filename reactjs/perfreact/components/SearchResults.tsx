@@ -1,5 +1,6 @@
-import { useMemo } from "react";
 import { ProductItem } from "./ProductItem";
+
+import { List, ListRowRenderer } from 'react-virtualized'
 
 interface SearchResultsProps {
   totalPrice: number;
@@ -14,20 +15,31 @@ interface SearchResultsProps {
 
 export function SearchResults({ totalPrice, results, onAddToWishlist }: SearchResultsProps) {
 
+  const rowRenderer: ListRowRenderer = ({ index, key, style }) => {
+    return (
+      <div key={key} style={style}>
+        {/* o style control se o elemento esta visível ou não */}
+        <ProductItem 
+          product={results[index]}
+          onAddToWishlist={onAddToWishlist}
+      />
+      </div>
+    )
+  }
+
   return (
     <div>
       <h1>Preço total</h1>
       <h2>{totalPrice}</h2>
 
-      {results.map((product) => {
-        return (
-        <ProductItem 
-          key={product.id} 
-          product={product}
-          onAddToWishlist={onAddToWishlist}
-        />
-        )
-      })}
+      <List
+        height={300} //300px -> utilizar o AutoSizer em situações onde não se tem idéia do tamanho
+        rowHeight={30} //30px -> altura da linha
+        width={600} //900px -> utilizar o AutoSizer em situações onde não se tem idéia do tamanho
+        overscanRowCount={5} //quantos itens deixar pré carregado fora da area de visualização
+        rowCount={results.length} //quantos itens tem na lista
+        rowRenderer={rowRenderer}
+      />
     </div>
   );
 }
