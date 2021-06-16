@@ -1,6 +1,6 @@
 module.exports = {
   // pastas a serem ignoradas pelo jest na procura de testes
-  testIgnorePatterns: ["/node_modules/", "/.next"],
+  testPathIgnorePatterns: ["/node_modules/", "/.next/"],
   //array arquivos que o jest deve executar antes de executar os testes
   setupFilesAfterEnv: [
     "<rootDir>/src/tests/setupTests.ts"
