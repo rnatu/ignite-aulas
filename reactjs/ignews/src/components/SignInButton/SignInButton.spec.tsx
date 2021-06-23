@@ -23,7 +23,10 @@ describe("SignInButton component", () => {
     //mockando apenas o primeiro uso do useSession, que é no render(<SignInButton />); abaixo
     useSessionMocked.mockReturnValueOnce([
       {
-        user: { name: "John Doe", email: "john.doe@example.com" },
+        user: {
+          name: "John Doe",
+          email: "john.doe@example.com",
+        },
         expires: "fake-expires",
       },
       false,
