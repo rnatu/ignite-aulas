@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Link from "next/link";
 import { RichText } from "prismic-dom";
 import { useEffect } from "react";
-import router from 'next/router'
+import { useRouter } from 'next/router'
 
 import { getPrismicClient } from "../../../services/prismic";
 
@@ -22,6 +22,7 @@ interface PostPreviewProps {
 //props post, sendo recebida da getStaticProps
 export default function PostPreview({ post }: PostPreviewProps) {
   const [ session ] = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if(session?.activeSubscription) {
