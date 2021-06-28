@@ -20,5 +20,16 @@ module.exports = {
   },
   //indica em que ambiente os testes estão sendo executados
   //o jsdom é nativo do jest
-  testEnvironment: 'jsdom'
+  testEnvironment: 'jsdom',
+
+  collectCoverage: true,
+  collectCoverageFrom: [
+      "src/**/*.{tsx,jsx}",
+      "!src/**/*.{spec.tsx, spec.jsx}",
+      "!**/node_modules/**",
+      "!src/**/_document.{tsx, jsx}",
+      "!src/**/_app.{tsx, jsx}",
+
+  ],
+  coverageReporters: ["lcov", "json"],
 };
