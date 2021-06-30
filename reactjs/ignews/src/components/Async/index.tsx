@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 export function Async() {
   const [isButtonVisible, setIsButtonVisible] = useState(false);
@@ -13,14 +13,14 @@ export function Async() {
   useEffect(() => {
     setTimeout(() => {
       setIsButtonInvisible(true);
-    }, 1000)
-  }, [])
+    }, 1000);
+  }, []);
 
   return (
     <div>
       <div>Hello World</div>
       { isButtonVisible && <button>Button 1</button>}
-      { !isButtonInvisible && <button>Button 2</button>}
+      {!isButtonInvisible && <button>Button 2</button>}
     </div>
-  )
+  );
 }
