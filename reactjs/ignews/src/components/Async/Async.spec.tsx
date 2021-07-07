@@ -2,15 +2,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { Async } from ".";
 
 describe("Async component", () => {
-  it("render correctly", () => {
-    render(<Async />);
-
-    //% getByText
-    /* o getByText procura de forma síncrona pelo texto,
-    retornando o HTMLElement, por isso não é necessário o uso do async await neste caso */
-    expect(screen.getByText("Hello World")).toBeInTheDocument();
-  });
-
   it("button visibilities are working", async () => {
     render(<Async />);
 
