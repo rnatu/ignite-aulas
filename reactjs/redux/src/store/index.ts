@@ -1,7 +1,6 @@
 import { createStore } from "redux";
+import combineReducers from './modules/rootReducer'
 
-const store = createStore(() => {
-  return { id: 3, name: "Diego", email: "diego@rocketseat.com.br" };
-});
+const store = createStore(combineReducers);
 
 export default store;
