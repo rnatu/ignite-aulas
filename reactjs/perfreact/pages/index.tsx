@@ -24,6 +24,11 @@ export default function Home() {
     const response = await fetch(`http://localhost:3333/products?q=${search}`);
     const data = await response.json();
 
+    if(data.length === 0) {
+      alert('Nada encontrado')
+      return;
+    }
+
     const formatter = new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
