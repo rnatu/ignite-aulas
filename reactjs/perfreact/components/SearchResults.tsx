@@ -1,6 +1,9 @@
 import { ProductItem } from "./ProductItem";
 
 import { List, ListRowRenderer } from 'react-virtualized'
+import { memo } from "react";
+
+import lodash from 'lodash';
 
 interface SearchResultsProps {
   totalPrice: number;
@@ -13,7 +16,7 @@ interface SearchResultsProps {
   onAddToWishlist: (id: number) => void;
 }
 
-export function SearchResults({ totalPrice, results, onAddToWishlist }: SearchResultsProps) {
+export function SearchResultsComponent({ totalPrice, results, onAddToWishlist }: SearchResultsProps) {
 
   const rowRenderer: ListRowRenderer = ({ index, key, style }) => {
     return (
@@ -43,6 +46,10 @@ export function SearchResults({ totalPrice, results, onAddToWishlist }: SearchRe
     </div>
   );
 }
+
+export const SearchResults = memo(SearchResultsComponent, (prevProps, nextProps) => {
+  return lodash.isEqual(prevProps.results, nextProps.results)
+})
 
 /*
   Fluxo
