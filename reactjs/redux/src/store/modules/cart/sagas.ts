@@ -29,6 +29,8 @@ function* checkProductStock({ payload }: CheckProductStockRequest) {
     );
   });
 
+  console.log("CurrentQuantity (Saga verification) - " + currentQuantity);
+
   //get com axios no saga
   const availableStockResponse: AxiosResponse<IStockResponse> = yield call(
     api.get,
@@ -41,8 +43,6 @@ function* checkProductStock({ payload }: CheckProductStockRequest) {
   } else {
     yield put(addProductToCartFailure(product.id));
   }
-
-  console.log(currentQuantity);
 }
 
 // primeiro parametro é a action, e o segundo a função a ser executada como middleware
