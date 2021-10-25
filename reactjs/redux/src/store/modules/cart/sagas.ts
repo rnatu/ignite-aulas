@@ -7,6 +7,7 @@ import {
 import { IState } from "../../index";
 import { AxiosResponse } from "axios";
 import api from "../../../services/api";
+import { ActionTypes } from "./types";
 
 type CheckProductStockRequest = ReturnType<typeof addProductToCartRequest>;
 
@@ -47,5 +48,5 @@ function* checkProductStock({ payload }: CheckProductStockRequest) {
 
 // primeiro parametro é a action, e o segundo a função a ser executada como middleware
 export default all([
-  takeLatest("ADD_PRODUCT_TO_CART_REQUEST", checkProductStock),
+  takeLatest(ActionTypes.addProductToCartRequest, checkProductStock),
 ]);
