@@ -5,11 +5,7 @@ export function Post() {
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <img
-            className={styles.avatar}
-            src="https://github.com/rnatu.png"
-            alt=""
-          />
+          <img src="https://github.com/rnatu.png" alt="" />
           <div className={styles.authorInfo}>
             <strong>Renato Xavier</strong>
             <span>Web Developer</span>
@@ -30,11 +26,13 @@ export function Post() {
         </p>
 
         <p>
-          <a href=""> 👉 jane.design/doctorcare</a>
+          👉 <a href="">jane.design/doctorcare</a>
         </p>
 
         <p>
-          <a href=""> #novoprojeto #nlw #rocketseat</a>
+          <a href=""> #novoprojeto</a>
+          <a href="">#nlw</a>
+          <a href="">#rocketseat</a>
         </p>
       </div>
     </article>
