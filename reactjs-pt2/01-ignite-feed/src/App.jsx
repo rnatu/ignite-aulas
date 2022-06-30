@@ -5,14 +5,6 @@ import { Post } from "./components/Post";
 import "./global.css";
 import styles from "./App.module.css";
 
-// author: {
-//   avatar_url: "",
-//   name: "",
-//   role: ""
-// }
-// publishedAt: Date,
-// content: String,
-
 const posts = [
   {
     id: 1,
@@ -33,7 +25,7 @@ const posts = [
       { type: "hashTag", content: "#nlw" },
       { type: "hashTag", content: "#rocketseat" },
     ],
-    publishedAt: new Date("2202-05-03 20:00:00"),
+    publishedAt: new Date("2022-05-03 20:00:00"),
   },
   {
     id: 2,
@@ -52,7 +44,7 @@ const posts = [
       { type: "hashTag", content: "#rocketseat" },
       { type: "hashTag", content: "#reactJS" },
     ],
-    publishedAt: new Date("2202-05-10 16:10:00"),
+    publishedAt: new Date("2022-06-29 16:10:00"),
   },
 ];
 
