@@ -9,6 +9,7 @@ import { useState } from "react";
 
 export function Post({ author, content, publishedAt }) {
   const [comments, setComments] = useState(["Post muito bacana, hein?!"]);
+  const [newCommentText, setNewCommentText] = useState("");
 
   const publishedDateFormatted = format(
     publishedAt,
@@ -21,13 +22,18 @@ export function Post({ author, content, publishedAt }) {
     addSuffix: true,
   });
 
+  const handleNewCommentChange = (event) => {
+    setNewCommentText(event.target.value);
+  };
+
   const handleCreateNewComment = (event) => {
     event.preventDefault();
 
-    // const newCommentText =
-    console.log(event.target.commentTextArea.value);
-    setComments([...comments, comments.length + 1]);
-    console.log(comments);
+    const newCommentText = event.target.commentTextArea.value;
+
+    setComments([...comments, event.target.commentTextArea.value]);
+
+    setNewCommentText("");
   };
 
   return (
@@ -77,6 +83,8 @@ export function Post({ author, content, publishedAt }) {
         <textarea
           name="commentTextArea"
           placeholder="Escreva seu comentário..."
+          onChange={handleNewCommentChange}
+          value={newCommentText}
         />
 
         <footer>
