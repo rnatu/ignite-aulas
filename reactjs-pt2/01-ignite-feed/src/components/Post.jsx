@@ -42,11 +42,7 @@ export function Post({ author, content, publishedAt }) {
         {content.map((line) => {
           if (line.type === "paragraph") {
             return <p>{line.content}</p>;
-          }
-        })}
-
-        {content.map((line) => {
-          if (line.type === "link") {
+          } else if (line.type === "link") {
             return (
               <p>
                 <a href="#">{line.content}</a>
