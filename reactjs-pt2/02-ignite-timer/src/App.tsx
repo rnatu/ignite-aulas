@@ -13,6 +13,14 @@ export function App() {
       <Button variant="secondary" />
       <Button variant="danger" />
       <Button />
+
+      <input type="text" />
+      <br />
+      <br />
+      <input type="text" />
+      <br />
+      <br />
+      <input type="text" />
     </ThemeProvider>
   );
 }
