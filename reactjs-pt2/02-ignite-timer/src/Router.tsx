@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable react/jsx-one-expression-per-line */
 import { Routes, Route } from 'react-router-dom';
 import { DefaultLayout } from './layouts/DefaultLayout';
 import { History } from './pages/History';
