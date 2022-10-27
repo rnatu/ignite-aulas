@@ -39,6 +39,25 @@ export const FormContainer = styled.div`
   }
 `;
 
+const BaseInput = styled.input`
+  background-color: transparent;
+  height: 2.5rem;
+  border: 0;
+  border-bottom: 2px solid ${(props) => props.theme['gray-500']};
+  font-weight: bold;
+  font-size: inherit; // herda o font-size do container pois o form container já tem o font-size especificado
+  padding: 0 0.5rem;
+  color: ${(props) => props.theme['gray-100']};
+`;
+
+export const TaskInput = styled(BaseInput)`
+  flex: 1;
+`;
+
+export const MinutesAmountInput = styled(BaseInput)`
+  width: 4rem;
+`;
+
 export const CountDownContainer = styled.div`
   font-family: 'Roboto Mono', monospace;
   font-size: 10rem;
@@ -65,4 +84,35 @@ export const Separator = styled.div`
 
   display: flex;
   justify-content: center;
+`;
+
+export const StartCountDownButton = styled.button`
+  width: 100%;
+  padding: 1.0625rem;
+  border: none;
+  border-radius: 8px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: .5rem;
+  background-color: ${(props) => props.theme['green-500']};
+
+  cursor: pointer;
+
+  font-weight: bold;
+  color: ${(props) => props.theme['gray-100']};
+  transition: 0.2s;
+
+  &:not(:disabled):hover {
+    background-color: ${(props) => props.theme['green-700']};
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+
 `;
