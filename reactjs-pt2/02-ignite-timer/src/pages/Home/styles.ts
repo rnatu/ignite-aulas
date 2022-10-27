@@ -48,6 +48,15 @@ const BaseInput = styled.input`
   font-size: inherit; // herda o font-size do container pois o form container já tem o font-size especificado
   padding: 0 0.5rem;
   color: ${(props) => props.theme['gray-100']};
+
+  &::placeholder {
+    color: ${(props) => props.theme['gray-500']};
+  }
+
+  &:focus {
+    box-shadow: none;
+    border-color: ${(props) => props.theme['green-300']};
+  }
 `;
 
 export const TaskInput = styled(BaseInput)`
