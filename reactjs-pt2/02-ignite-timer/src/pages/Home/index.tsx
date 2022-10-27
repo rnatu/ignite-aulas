@@ -10,6 +10,13 @@ import {
 } from './styles';
 
 export function Home() {
+  const datalistOption = [
+    'Projeto 1',
+    'Projeto 2',
+    'Projeto 3',
+    'Banana',
+  ];
+
   return (
     <HomeContainer>
       <form action="">
@@ -20,8 +27,15 @@ export function Home() {
               id="task"
               type="text"
               placeholder="Dê um nome para o seu projeto"
+              list="task-suggestions"
             />
           </label>
+
+          <datalist id="task-suggestions">
+            {datalistOption.map((option) => (
+              <option value={option} aria-label={option} />
+            ))}
+          </datalist>
 
           <label htmlFor="minutesAmount">
             durante
@@ -29,6 +43,9 @@ export function Home() {
               id="minutesAmount"
               type="number"
               placeholder="00"
+              step={5}
+              min={5}
+              max={60}
             />
           </label>
           <span>minutos.</span>
