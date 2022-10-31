@@ -1,5 +1,5 @@
 import { Play } from 'phosphor-react';
-import { useState } from 'react';
+import { FormEvent } from 'react';
 import {
   CountDownContainer,
   FormContainer,
@@ -11,23 +11,32 @@ import {
 } from './styles';
 
 export function Home() {
-  // controlled
-  const [task, setTask] = useState('');
+  // uncontrolled
 
-  function resetForm() {
-    setTask('');
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    // eslint-disable-next-line no-console
+    console.log(event.currentTarget.task.value);
   }
 
   const datalistOption = [
-    'Projeto 1',
-    'Projeto 2',
-    'Projeto 3',
-    'Banana',
+    {
+      id: 1,
+      name: 'Projeto 1',
+    },
+    {
+      id: 2,
+      name: 'Projeto 2',
+    },
+    {
+      id: 3,
+      name: 'Banana',
+    },
   ];
 
   return (
     <HomeContainer>
-      <form action="">
+      <form action="" onSubmit={(event) => handleSubmit(event)}>
         <FormContainer>
           <label htmlFor="task">
             Vou trabalhar em
@@ -36,14 +45,13 @@ export function Home() {
               type="text"
               placeholder="Dê um nome para o seu projeto"
               list="task-suggestions"
-              onChange={(e) => setTask(e.target.value)}
-              value={task}
+              name="task"
             />
           </label>
 
           <datalist id="task-suggestions">
             {datalistOption.map((option) => (
-              <option value={option} aria-label={option} />
+              <option key={option.id} value={option.name} aria-label={option.name} />
             ))}
           </datalist>
 
@@ -69,7 +77,7 @@ export function Home() {
           <span>0</span>
         </CountDownContainer>
 
-        <StartCountDownButton disabled={!task} type="submit" onSubmit={() => resetForm}>
+        <StartCountDownButton type="submit">
           <Play size={24} />
           Começar
         </StartCountDownButton>
