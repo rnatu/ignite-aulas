@@ -17,6 +17,9 @@ export function Home() {
     event.preventDefault();
     // eslint-disable-next-line no-console
     console.log(event.currentTarget.task.value);
+
+    // eslint-disable-next-line no-param-reassign
+    event.currentTarget.task.value = '';
   }
 
   const datalistOption = [
