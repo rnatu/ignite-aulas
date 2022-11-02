@@ -1,4 +1,5 @@
 import { Play } from 'phosphor-react';
+import { useForm } from 'react-hook-form';
 import { FormEvent } from 'react';
 import {
   CountDownContainer,
@@ -11,8 +12,6 @@ import {
 } from './styles';
 
 export function Home() {
-  // uncontrolled
-
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     // eslint-disable-next-line no-console
