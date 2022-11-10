@@ -18,19 +18,31 @@ type NewCycleFormData = {
   minutesAmount: number;
 };
 
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod.number().min(5, "'O ciclo precisa ser de no mínimo 5 minutos").max(60, 'O ciclo precisa ser de no máximo 60 minutos'),
+});
+
 export function Home() {
-  const { register, handleSubmit, watch } = useForm<NewCycleFormData>({
+  const {
+    register, handleSubmit, watch, formState,
+  } = useForm<NewCycleFormData>({
     defaultValues: {
       task: '',
       minutesAmount: 5,
     },
+    resolver: zodResolver(newCycleFormValidationSchema),
   });
+
+  console.log(formState.errors);
 
   function handleCreateNewCycle(data: NewCycleFormData) {
     console.log(data);
     console.log(data.minutesAmount);
   }
 
+  /* o watch transforma o input com o name task em um controlled input,
+  monitorando qualquer mudança */
   const task = watch('task');
   const isSubmitDisabled = !task;
 
@@ -66,7 +78,11 @@ export function Home() {
 
           <datalist id="task-suggestions">
             {datalistOption.map((option) => (
-              <option key={option.id} value={option.name} aria-label={option.name} />
+              <option
+                key={option.id}
+                value={option.name}
+                aria-label={option.name}
+              />
             ))}
           </datalist>
 
@@ -78,10 +94,9 @@ export function Home() {
               placeholder="00"
               step={5}
               min={5}
-              max={60}
+              // max={60}
               {...register('minutesAmount', {
                 valueAsNumber: true,
-
               })}
             />
           </label>
@@ -96,7 +111,7 @@ export function Home() {
           <span>0</span>
         </CountDownContainer>
 
-        <StartCountDownButton disabled={isSubmitDisabled} type="submit">
+        <StartCountDownButton type="submit" disabled={isSubmitDisabled}>
           <Play size={24} />
           Começar
         </StartCountDownButton>
