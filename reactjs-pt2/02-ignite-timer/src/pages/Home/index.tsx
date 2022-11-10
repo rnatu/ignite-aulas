@@ -10,11 +10,22 @@ import {
   TaskInput,
 } from './styles';
 
-export function Home() {
-  const { register, handleSubmit, watch } = useForm();
+type NewCycleFormData = {
+  task: string;
+  minutesAmount: number;
+};
 
-  function handleCreateNewCycle(data: any) {
+export function Home() {
+  const { register, handleSubmit, watch } = useForm<NewCycleFormData>({
+    defaultValues: {
+      task: '',
+      minutesAmount: 5,
+    },
+  });
+
+  function handleCreateNewCycle(data: NewCycleFormData) {
     console.log(data);
+    console.log(data.minutesAmount);
   }
 
   const task = watch('task');
@@ -82,7 +93,7 @@ export function Home() {
           <span>0</span>
         </CountDownContainer>
 
-        <StartCountDownButton disabled={!isSubmitDisabled} type="submit">
+        <StartCountDownButton disabled={isSubmitDisabled} type="submit">
           <Play size={24} />
           Começar
         </StartCountDownButton>
