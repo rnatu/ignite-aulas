@@ -13,10 +13,11 @@ import {
   TaskInput,
 } from './styles';
 
-type NewCycleFormData = {
-  task: string;
-  minutesAmount: number;
-};
+// interface NewCycleFormData {
+//   task: string;
+//   minutesAmount: number;
+// }
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
 
 const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, 'Informe a tarefa'),
