@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as zod from 'zod';
 
+import { useState } from 'react';
 import {
   CountDownContainer,
   FormContainer,
@@ -24,7 +25,15 @@ const newCycleFormValidationSchema = zod.object({
   minutesAmount: zod.number().min(5, "'O ciclo precisa ser de no mínimo 5 minutos").max(60, 'O ciclo precisa ser de no máximo 60 minutos'),
 });
 
+interface Cycle {
+  id: string,
+  task: string,
+  minutesAmount: number,
+}
+
 export function Home() {
+  const [cycles, setCycles] = useState<Cycle[]>([]);
+
   const {
     register, handleSubmit, watch, formState,
   } = useForm<NewCycleFormData>({
@@ -38,8 +47,13 @@ export function Home() {
   console.log(formState.errors);
 
   function handleCreateNewCycle(data: NewCycleFormData) {
-    console.log(data);
-    console.log(data.minutesAmount);
+    const newCycle: Cycle = {
+      id: String(new Date().getTime()),
+      task: data.task,
+      minutesAmount: data.minutesAmount,
+    };
+
+    setCycles((state) => [...state, newCycle]);
   }
 
   /* o watch transforma o input com o name task em um controlled input,
