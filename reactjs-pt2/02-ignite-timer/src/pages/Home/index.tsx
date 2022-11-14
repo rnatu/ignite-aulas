@@ -33,9 +33,13 @@ interface Cycle {
 
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([]);
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
 
   const {
-    register, handleSubmit, watch, formState,
+    register,
+    handleSubmit,
+    watch,
+    // formState,
   } = useForm<NewCycleFormData>({
     defaultValues: {
       task: '',
@@ -44,17 +48,23 @@ export function Home() {
     resolver: zodResolver(newCycleFormValidationSchema),
   });
 
-  console.log(formState.errors);
+  // console.log(formState.errors);
 
   function handleCreateNewCycle(data: NewCycleFormData) {
+    const id = String(new Date().getTime());
+
     const newCycle: Cycle = {
-      id: String(new Date().getTime()),
+      id,
       task: data.task,
       minutesAmount: data.minutesAmount,
     };
 
     setCycles((state) => [...state, newCycle]);
+    setActiveCycleId(id);
   }
+
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
+  console.log(activeCycle);
 
   /* o watch transforma o input com o name task em um controlled input,
   monitorando qualquer mudança */
