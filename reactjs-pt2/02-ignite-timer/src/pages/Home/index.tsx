@@ -66,13 +66,20 @@ export function Home() {
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
+  // pegando o total de segundos da tarefa ativa
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
+  // pegando os segundos atuais com a redução a cada 1 segundo
   const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0;
 
+  // pegando a quantidade de minutos atual
   const minutesAmount = Math.floor(currentSeconds / 60);
+  // pegando a quantidade de segundos atual
   const secondsAmount = currentSeconds % 60;
 
-  console.log(secondsAmount);
+  // convetendo minutos em string e adicionando um '0' no começo
+  const minutes = String(minutesAmount).padStart(2, '0');
+  // convetendo segundos em string e adicionando um '0' no começo
+  const seconds = String(secondsAmount).padStart(2, '0');
 
   /* o watch transforma o input com o name task em um controlled input,
   monitorando qualquer mudança */
@@ -137,11 +144,11 @@ export function Home() {
         </FormContainer>
 
         <CountDownContainer>
-          <span>0</span>
-          <span>0</span>
+          <span>{minutes[0]}</span>
+          <span>{minutes[1]}</span>
           <Separator>:</Separator>
-          <span>0</span>
-          <span>0</span>
+          <span>{seconds[0]}</span>
+          <span>{seconds[1]}</span>
         </CountDownContainer>
 
         <StartCountDownButton type="submit" disabled={isSubmitDisabled}>
