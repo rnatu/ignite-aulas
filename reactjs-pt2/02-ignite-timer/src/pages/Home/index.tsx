@@ -2,8 +2,9 @@ import { Play } from 'phosphor-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as zod from 'zod';
+import { differenceInSeconds } from 'date-fns';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   CountDownContainer,
   FormContainer,
@@ -29,6 +30,7 @@ interface Cycle {
   id: string,
   task: string,
   minutesAmount: number,
+  startDate: Date,
 }
 
 export function Home() {
@@ -51,6 +53,17 @@ export function Home() {
 
   // console.log(formState.errors);
 
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+  useEffect(() => {
+    if (activeCycle) {
+      setInterval(() => {
+        setAmountSecondsPassed(differenceInSeconds(new Date(), activeCycle.startDate));
+        console.log('o');
+      }, 1000);
+    }
+  }, [activeCycle]);
+
   function handleCreateNewCycle(data: NewCycleFormData) {
     const id = String(new Date().getTime());
 
@@ -58,13 +71,12 @@ export function Home() {
       id,
       task: data.task,
       minutesAmount: data.minutesAmount,
+      startDate: new Date(),
     };
 
     setCycles((state) => [...state, newCycle]);
     setActiveCycleId(id);
   }
-
-  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
   // pegando o total de segundos da tarefa ativa
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
