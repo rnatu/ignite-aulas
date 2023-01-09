@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const HomeContainer = styled.main`
-
   flex: 1;
 
   display: flex;
@@ -34,7 +33,7 @@ export const FormContainer = styled.div`
   label {
     display: flex;
     align-items: center;
-  
+
     gap: 0.5rem;
   }
 `;
@@ -72,7 +71,7 @@ export const MinutesAmountInput = styled(BaseInput)`
 `;
 
 export const CountDownContainer = styled.div`
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 10rem;
   line-height: 8rem;
   color: ${(props) => props.theme['gray-100']};
@@ -82,7 +81,7 @@ export const CountDownContainer = styled.div`
 
   span {
     background-color: ${(props) => props.theme['gray-700']};
-  
+
     padding: 2rem 1rem;
     border-radius: 8px;
   }
@@ -99,7 +98,7 @@ export const Separator = styled.div`
   justify-content: center;
 `;
 
-export const StartCountDownButton = styled.button`
+export const BaseCountDownButton = styled.button`
   width: 100%;
   padding: 1.0625rem;
   border: none;
@@ -108,24 +107,33 @@ export const StartCountDownButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  gap: .5rem;
-  background-color: ${(props) => props.theme['green-500']};
+  gap: 0.5rem;
 
   cursor: pointer;
 
-  font-weight: bold;
   color: ${(props) => props.theme['gray-100']};
-  transition: 0.2s;
+  font-weight: bold;
 
-  &:not(:disabled):hover {
-    background-color: ${(props) => props.theme['green-700']};
-  }
+  transition: 0.2s;
 
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
   }
+`;
 
+export const StartCountDownButton = styled(BaseCountDownButton)`
+  background-color: ${(props) => props.theme['green-500']};
 
+  &:not(:disabled):hover {
+    background-color: ${(props) => props.theme['green-700']};
+  }
+`;
+
+export const StopCountDownButton = styled(BaseCountDownButton)`
+  background-color: ${(props) => props.theme['red-500']};
+
+  &:not(:disabled):hover {
+    background-color: ${(props) => props.theme['red-700']};
+  }
 `;
