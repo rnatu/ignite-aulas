@@ -42,6 +42,7 @@ export function Home() {
     register,
     handleSubmit,
     watch,
+    reset,
     // formState,
   } = useForm<NewCycleFormData>({
     defaultValues: {
@@ -56,12 +57,18 @@ export function Home() {
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
   useEffect(() => {
+    let interval: number;
+
     if (activeCycle) {
-      setInterval(() => {
+      interval = setInterval(() => {
         setAmountSecondsPassed(differenceInSeconds(new Date(), activeCycle.startDate));
         console.log('o');
       }, 1000);
     }
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [activeCycle]);
 
   function handleCreateNewCycle(data: NewCycleFormData) {
@@ -76,6 +83,10 @@ export function Home() {
 
     setCycles((state) => [...state, newCycle]);
     setActiveCycleId(id);
+    setAmountSecondsPassed(0);
+
+    // limpar os campos do form
+    reset();
   }
 
   // pegando o total de segundos da tarefa ativa
@@ -92,6 +103,12 @@ export function Home() {
   const minutes = String(minutesAmount).padStart(2, '0');
   // convetendo segundos em string e adicionando um '0' no começo
   const seconds = String(secondsAmount).padStart(2, '0');
+
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${minutes}: ${seconds}`;
+    }
+  }, [minutes, seconds, activeCycle]);
 
   /* o watch transforma o input com o name task em um controlled input,
   monitorando qualquer mudança */
