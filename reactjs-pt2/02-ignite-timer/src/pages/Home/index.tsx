@@ -32,6 +32,7 @@ interface Cycle {
   task: string,
   minutesAmount: number,
   startDate: Date,
+  interruptedDate?: Date,
 }
 
 export function Home() {
@@ -63,7 +64,6 @@ export function Home() {
     if (activeCycle) {
       interval = setInterval(() => {
         setAmountSecondsPassed(differenceInSeconds(new Date(), activeCycle.startDate));
-        console.log('o');
       }, 1000);
     }
 
@@ -90,6 +90,17 @@ export function Home() {
     reset();
   }
 
+  function handleInterruptCycle() {
+    setCycles(cycles.map((cycle) => {
+      if (cycle.id === activeCycleId) {
+        return { ...cycle, interruptedDate: new Date() };
+      }
+      return cycle;
+    }));
+
+    setActiveCycleId(null);
+  }
+
   // pegando o total de segundos da tarefa ativa
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
   // pegando os segundos atuais com a redução a cada 1 segundo
@@ -100,9 +111,9 @@ export function Home() {
   // pegando a quantidade de segundos atual
   const secondsAmount = currentSeconds % 60;
 
-  // convetendo minutos em string e adicionando um '0' no começo
+  // convertendo minutos em string e adicionando um '0' no começo
   const minutes = String(minutesAmount).padStart(2, '0');
-  // convetendo segundos em string e adicionando um '0' no começo
+  // convertendo segundos em string e adicionando um '0' no começo
   const seconds = String(secondsAmount).padStart(2, '0');
 
   useEffect(() => {
@@ -131,6 +142,8 @@ export function Home() {
     },
   ];
 
+  console.log(cycles);
+
   return (
     <HomeContainer>
       <form action="" onSubmit={handleSubmit(handleCreateNewCycle)}>
@@ -141,6 +154,7 @@ export function Home() {
               id="task"
               type="text"
               placeholder="Dê um nome para o seu projeto"
+              disabled={!!activeCycle}
               list="task-suggestions"
               {...register('task')}
             />
@@ -162,6 +176,7 @@ export function Home() {
               id="minutesAmount"
               type="number"
               placeholder="00"
+              disabled={!!activeCycle}
               step={5}
               min={5}
               // max={60}
@@ -181,8 +196,8 @@ export function Home() {
           <span>{seconds[1]}</span>
         </CountDownContainer>
 
-        { activeCycleId ? (
-          <StopCountDownButton type="button">
+        {activeCycleId ? (
+          <StopCountDownButton onClick={() => handleInterruptCycle()} type="button">
             <HandPalm size={24} />
             Interromper
           </StopCountDownButton>
