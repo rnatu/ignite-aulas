@@ -16,24 +16,21 @@ import {
   TaskInput,
 } from './styles';
 
-// interface NewCycleFormData {
-//   task: string;
-//   minutesAmount: number;
-// }
-type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
-
-const newCycleFormValidationSchema = zod.object({
-  task: zod.string().min(1, 'Informe a tarefa'),
-  minutesAmount: zod.number().min(5, "'O ciclo precisa ser de no mínimo 5 minutos").max(60, 'O ciclo precisa ser de no máximo 60 minutos'),
-});
-
 interface Cycle {
   id: string,
   task: string,
   minutesAmount: number,
   startDate: Date,
   interruptedDate?: Date,
+  finishedDate?: Date,
 }
+
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod.number().min(1, "'O ciclo precisa ser de no mínimo 5 minutos").max(60, 'O ciclo precisa ser de no máximo 60 minutos'),
+});
+
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
 
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([]);
@@ -45,7 +42,6 @@ export function Home() {
     handleSubmit,
     watch,
     reset,
-    // formState,
   } = useForm<NewCycleFormData>({
     defaultValues: {
       task: '',
@@ -54,23 +50,51 @@ export function Home() {
     resolver: zodResolver(newCycleFormValidationSchema),
   });
 
-  // console.log(formState.errors);
-
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+  // pegando o total de segundos da tarefa ativa
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
+  // pegando os segundos atuais com a redução a cada 1 segundo
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0;
+
+  // pegando a quantidade de minutos atual
+  const minutesAmount = Math.floor(currentSeconds / 60);
+  // pegando a quantidade de segundos atual
+  const secondsAmount = currentSeconds % 60;
+
+  // convertendo minutos em string e adicionando um '0' no começo
+  const minutes = String(minutesAmount).padStart(2, '0');
+  // convertendo segundos em string e adicionando um '0' no começo
+  const seconds = String(secondsAmount).padStart(2, '0');
 
   useEffect(() => {
     let interval: number;
 
     if (activeCycle) {
       interval = setInterval(() => {
-        setAmountSecondsPassed(differenceInSeconds(new Date(), activeCycle.startDate));
-      }, 1000);
+        const secondsDifference = differenceInSeconds(new Date(), activeCycle.startDate);
+
+        if (secondsDifference >= totalSeconds) {
+          setCycles((state) => state.map((cycle) => {
+            if (cycle.id === activeCycleId) {
+              return { ...cycle, finishedDate: new Date() };
+            }
+            return cycle;
+          }));
+
+          setAmountSecondsPassed(totalSeconds);
+
+          clearInterval(interval);
+        } else {
+          setAmountSecondsPassed(secondsDifference);
+        }
+      }, 500);
     }
 
     return () => {
       clearInterval(interval);
     };
-  }, [activeCycle]);
+  }, [activeCycle, totalSeconds, activeCycleId]);
 
   function handleCreateNewCycle(data: NewCycleFormData) {
     const id = String(new Date().getTime());
@@ -91,7 +115,7 @@ export function Home() {
   }
 
   function handleInterruptCycle() {
-    setCycles(cycles.map((cycle) => {
+    setCycles((state) => state.map((cycle) => {
       if (cycle.id === activeCycleId) {
         return { ...cycle, interruptedDate: new Date() };
       }
@@ -101,25 +125,13 @@ export function Home() {
     setActiveCycleId(null);
   }
 
-  // pegando o total de segundos da tarefa ativa
-  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0;
-  // pegando os segundos atuais com a redução a cada 1 segundo
-  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0;
-
-  // pegando a quantidade de minutos atual
-  const minutesAmount = Math.floor(currentSeconds / 60);
-  // pegando a quantidade de segundos atual
-  const secondsAmount = currentSeconds % 60;
-
-  // convertendo minutos em string e adicionando um '0' no começo
-  const minutes = String(minutesAmount).padStart(2, '0');
-  // convertendo segundos em string e adicionando um '0' no começo
-  const seconds = String(secondsAmount).padStart(2, '0');
-
   useEffect(() => {
     if (activeCycle) {
       document.title = `${minutes}: ${seconds}`;
+      return;
     }
+
+    document.title = 'Ignite Timer';
   }, [minutes, seconds, activeCycle]);
 
   /* o watch transforma o input com o name task em um controlled input,
@@ -141,8 +153,6 @@ export function Home() {
       name: 'Banana',
     },
   ];
-
-  console.log(cycles);
 
   return (
     <HomeContainer>
@@ -177,9 +187,9 @@ export function Home() {
               type="number"
               placeholder="00"
               disabled={!!activeCycle}
-              step={5}
-              min={5}
-              // max={60}
+              step={1}
+              min={1}
+              max={60}
               {...register('minutesAmount', {
                 valueAsNumber: true,
               })}
