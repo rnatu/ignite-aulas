@@ -6,15 +6,12 @@ import { differenceInSeconds } from 'date-fns';
 
 import { useEffect, useState } from 'react';
 import {
-  CountDownContainer,
-  FormContainer,
   HomeContainer,
-  MinutesAmountInput,
-  Separator,
   StartCountDownButton,
   StopCountDownButton,
-  TaskInput,
 } from './styles';
+import { NewCycleForm } from './NewCycleForm';
+import { CountDown } from './Countdown';
 
 interface Cycle {
   id: string,
@@ -157,54 +154,10 @@ export function Home() {
   return (
     <HomeContainer>
       <form action="" onSubmit={handleSubmit(handleCreateNewCycle)}>
-        <FormContainer>
-          <label htmlFor="task">
-            Vou trabalhar em
-            <TaskInput
-              id="task"
-              type="text"
-              placeholder="Dê um nome para o seu projeto"
-              disabled={!!activeCycle}
-              list="task-suggestions"
-              {...register('task')}
-            />
-          </label>
 
-          <datalist id="task-suggestions">
-            {datalistOption.map((option) => (
-              <option
-                key={option.id}
-                value={option.name}
-                aria-label={option.name}
-              />
-            ))}
-          </datalist>
+        <NewCycleForm />
 
-          <label htmlFor="minutesAmount">
-            durante
-            <MinutesAmountInput
-              id="minutesAmount"
-              type="number"
-              placeholder="00"
-              disabled={!!activeCycle}
-              step={1}
-              min={1}
-              max={60}
-              {...register('minutesAmount', {
-                valueAsNumber: true,
-              })}
-            />
-          </label>
-          <span>minutos.</span>
-        </FormContainer>
-
-        <CountDownContainer>
-          <span>{minutes[0]}</span>
-          <span>{minutes[1]}</span>
-          <Separator>:</Separator>
-          <span>{seconds[0]}</span>
-          <span>{seconds[1]}</span>
-        </CountDownContainer>
+        <CountDown />
 
         {activeCycleId ? (
           <StopCountDownButton onClick={() => handleInterruptCycle()} type="button">
