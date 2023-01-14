@@ -1,8 +1,11 @@
 import { differenceInSeconds } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { cyclesContext } from '../..';
 import { CountDownContainer, Separator } from './styles';
 
 export function CountDown() {
+  const { activeCycle } = useContext(cyclesContext);
+
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0);
 
   // pegando o total de segundos da tarefa ativa
