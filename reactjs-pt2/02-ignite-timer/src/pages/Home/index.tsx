@@ -8,6 +8,7 @@ import {
   StopCountDownButton,
 } from './styles';
 import { NewCycleForm } from './components/NewCycleForm';
+// eslint-disable-next-line import/no-cycle
 import { CountDown } from './components/Countdown';
 
 interface Cycle {
@@ -42,23 +43,23 @@ export function Home() {
     }));
   }
 
-  function handleCreateNewCycle(data: NewCycleFormData) {
-    const id = String(new Date().getTime());
+  // function handleCreateNewCycle(data: NewCycleFormData) {
+  //   const id = String(new Date().getTime());
 
-    const newCycle: Cycle = {
-      id,
-      task: data.task,
-      minutesAmount: data.minutesAmount,
-      startDate: new Date(),
-    };
+  //   const newCycle: Cycle = {
+  //     id,
+  //     task: data.task,
+  //     minutesAmount: data.minutesAmount,
+  //     startDate: new Date(),
+  //   };
 
-    setCycles((state) => [...state, newCycle]);
-    setActiveCycleId(id);
-    setAmountSecondsPassed(0);
+  //   setCycles((state) => [...state, newCycle]);
+  //   setActiveCycleId(id);
+  //   setAmountSecondsPassed(0);
 
-    // limpar os campos do form
-    reset();
-  }
+  //   // limpar os campos do form
+  //   reset();
+  // }
 
   function handleInterruptCycle() {
     setCycles((state) => state.map((cycle) => {
@@ -71,19 +72,19 @@ export function Home() {
     setActiveCycleId(null);
   }
 
-  useEffect(() => {
-    if (activeCycle) {
-      document.title = `${minutes}: ${seconds}`;
-      return;
-    }
+  // useEffect(() => {
+  //   if (activeCycle) {
+  //     document.title = `${minutes}: ${seconds}`;
+  //     return;
+  //   }
 
-    document.title = 'Ignite Timer';
-  }, [minutes, seconds, activeCycle]);
+  //   document.title = 'Ignite Timer';
+  // }, [minutes, seconds, activeCycle]);
 
   /* o watch transforma o input com o name task em um controlled input,
   monitorando qualquer mudança */
-  const task = watch('task');
-  const isSubmitDisabled = !task;
+  // const task = watch('task');
+  // const isSubmitDisabled = !task;
 
   return (
 
