@@ -1,10 +1,11 @@
 import { differenceInSeconds } from 'date-fns';
 import { useContext, useEffect, useState } from 'react';
+// eslint-disable-next-line import/no-cycle
 import { cyclesContext } from '../..';
 import { CountDownContainer, Separator } from './styles';
 
 export function CountDown() {
-  const { activeCycle } = useContext(cyclesContext);
+  const { activeCycle, activeCycleId, markCurrentCycleAsFinished } = useContext(cyclesContext);
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0);
 
@@ -31,13 +32,7 @@ export function CountDown() {
         const secondsDifference = differenceInSeconds(new Date(), activeCycle.startDate);
 
         if (secondsDifference >= totalSeconds) {
-          setCycles((state) => state.map((cycle) => {
-            if (cycle.id === activeCycleId) {
-              return { ...cycle, finishedDate: new Date() };
-            }
-            return cycle;
-          }));
-
+          markCurrentCycleAsFinished();
           setAmountSecondsPassed(totalSeconds);
 
           clearInterval(interval);
@@ -50,7 +45,7 @@ export function CountDown() {
     return () => {
       clearInterval(interval);
     };
-  }, [activeCycle, totalSeconds, activeCycleId]);
+  }, [activeCycle, totalSeconds, activeCycleId, markCurrentCycleAsFinished]);
 
   return (
 

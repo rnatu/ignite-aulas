@@ -1,5 +1,7 @@
 import { HandPalm, Play } from 'phosphor-react';
-import { createContext, useEffect, useState } from 'react';
+import {
+  createContext, useEffect, useMemo, useState,
+} from 'react';
 import {
   HomeContainer,
   StartCountDownButton,
@@ -19,6 +21,8 @@ interface Cycle {
 
 interface CyclesContextType {
   activeCycle: Cycle | undefined;
+  activeCycleId: string | null,
+  markCurrentCycleAsFinished: () => void,
 }
 
 export const cyclesContext = createContext({} as CyclesContextType);
@@ -28,6 +32,15 @@ export function Home() {
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+  function markCurrentCycleAsFinished() {
+    setCycles((state) => state.map((cycle) => {
+      if (cycle.id === activeCycleId) {
+        return { ...cycle, finishedDate: new Date() };
+      }
+      return cycle;
+    }));
+  }
 
   function handleCreateNewCycle(data: NewCycleFormData) {
     const id = String(new Date().getTime());
@@ -77,10 +90,17 @@ export function Home() {
     <HomeContainer>
       <form action="" onSubmit={handleSubmit(handleCreateNewCycle)}>
 
-        <cyclesContext.Provider value={{}}>
+        <cyclesContext.Provider value={useMemo(
+          () => (
+            {
+              activeCycle, activeCycleId, markCurrentCycleAsFinished,
+            }),
+          [activeCycle, activeCycleId, markCurrentCycleAsFinished],
+        )}
+        >
           <NewCycleForm />
 
-          <CountDown activeCycle={activeCycle} />
+          <CountDown />
         </cyclesContext.Provider>
 
         {activeCycle ? (

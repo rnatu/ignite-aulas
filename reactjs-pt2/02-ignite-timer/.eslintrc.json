@@ -31,6 +31,6 @@
       {
         "assert": "either" // either check for `htmlFor` or `nesting`
       }
-    ]
+    ]   
   }
 }
