@@ -1,12 +1,15 @@
 import { HandPalm, Play } from 'phosphor-react';
+import * as zod from 'zod';
 import {
-  createContext, useEffect, useMemo, useState,
+  createContext, useMemo, useState,
 } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   HomeContainer,
   StartCountDownButton,
   StopCountDownButton,
 } from './styles';
+// eslint-disable-next-line import/no-cycle
 import { NewCycleForm } from './components/NewCycleForm';
 // eslint-disable-next-line import/no-cycle
 import { CountDown } from './components/Countdown';
@@ -26,6 +29,13 @@ interface CyclesContextType {
   markCurrentCycleAsFinished: () => void,
 }
 
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod.number().min(1, "'O ciclo precisa ser de no mínimo 5 minutos").max(60, 'O ciclo precisa ser de no máximo 60 minutos'),
+});
+
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
+
 export const cyclesContext = createContext({} as CyclesContextType);
 
 export function Home() {
@@ -33,6 +43,19 @@ export function Home() {
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+  } = useForm<NewCycleFormData>({
+    defaultValues: {
+      task: '',
+      minutesAmount: 5,
+    },
+    resolver: zodResolver(newCycleFormValidationSchema),
+  });
 
   function markCurrentCycleAsFinished() {
     setCycles((state) => state.map((cycle) => {
@@ -43,23 +66,23 @@ export function Home() {
     }));
   }
 
-  // function handleCreateNewCycle(data: NewCycleFormData) {
-  //   const id = String(new Date().getTime());
+  function handleCreateNewCycle(data: NewCycleFormData) {
+    const id = String(new Date().getTime());
 
-  //   const newCycle: Cycle = {
-  //     id,
-  //     task: data.task,
-  //     minutesAmount: data.minutesAmount,
-  //     startDate: new Date(),
-  //   };
+    const newCycle: Cycle = {
+      id,
+      task: data.task,
+      minutesAmount: data.minutesAmount,
+      startDate: new Date(),
+    };
 
-  //   setCycles((state) => [...state, newCycle]);
-  //   setActiveCycleId(id);
-  //   setAmountSecondsPassed(0);
+    setCycles((state) => [...state, newCycle]);
+    setActiveCycleId(id);
+    setAmountSecondsPassed(0);
 
-  //   // limpar os campos do form
-  //   reset();
-  // }
+    // limpar os campos do form
+    reset();
+  }
 
   function handleInterruptCycle() {
     setCycles((state) => state.map((cycle) => {
@@ -72,19 +95,10 @@ export function Home() {
     setActiveCycleId(null);
   }
 
-  // useEffect(() => {
-  //   if (activeCycle) {
-  //     document.title = `${minutes}: ${seconds}`;
-  //     return;
-  //   }
-
-  //   document.title = 'Ignite Timer';
-  // }, [minutes, seconds, activeCycle]);
-
   /* o watch transforma o input com o name task em um controlled input,
   monitorando qualquer mudança */
-  // const task = watch('task');
-  // const isSubmitDisabled = !task;
+  const task = watch('task');
+  const isSubmitDisabled = !task;
 
   return (
 

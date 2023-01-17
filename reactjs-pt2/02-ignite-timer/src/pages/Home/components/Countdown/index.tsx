@@ -47,6 +47,15 @@ export function CountDown() {
     };
   }, [activeCycle, totalSeconds, activeCycleId, markCurrentCycleAsFinished]);
 
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${minutes}: ${seconds}`;
+      return;
+    }
+
+    document.title = 'Ignite Timer';
+  }, [minutes, seconds, activeCycle]);
+
   return (
 
     <CountDownContainer>
