@@ -1,9 +1,10 @@
 import { HandPalm, Play } from 'phosphor-react';
 import * as zod from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   createContext, useMemo, useState,
 } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import {
   HomeContainer,
   StartCountDownButton,
@@ -44,18 +45,15 @@ export function Home() {
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-  } = useForm<NewCycleFormData>({
+  const newCycleForm = useForm<NewCycleFormData>({
     defaultValues: {
       task: '',
       minutesAmount: 5,
     },
     resolver: zodResolver(newCycleFormValidationSchema),
   });
+
+  const { handleSubmit, watch, reset } = newCycleForm;
 
   function markCurrentCycleAsFinished() {
     setCycles((state) => state.map((cycle) => {
@@ -113,7 +111,9 @@ export function Home() {
           [activeCycle, activeCycleId, markCurrentCycleAsFinished],
         )}
         >
-          <NewCycleForm />
+          <FormProvider {...newCycleForm}>
+            <NewCycleForm />
+          </FormProvider>
 
           <CountDown />
         </cyclesContext.Provider>
