@@ -27,7 +27,9 @@ interface Cycle {
 interface CyclesContextType {
   activeCycle: Cycle | undefined;
   activeCycleId: string | null,
+  amountSecondsPassed: number,
   markCurrentCycleAsFinished: () => void,
+  setSecondsPassed: (seconds: number) => void,
 }
 
 const newCycleFormValidationSchema = zod.object({
@@ -42,6 +44,7 @@ export const cyclesContext = createContext({} as CyclesContextType);
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([]);
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0);
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
@@ -62,6 +65,10 @@ export function Home() {
       }
       return cycle;
     }));
+  }
+
+  function setSecondsPassed(seconds: number) {
+    setAmountSecondsPassed(seconds);
   }
 
   function handleCreateNewCycle(data: NewCycleFormData) {
@@ -106,7 +113,12 @@ export function Home() {
         <cyclesContext.Provider value={useMemo(
           () => (
             {
-              activeCycle, activeCycleId, markCurrentCycleAsFinished,
+              activeCycle,
+              activeCycleId,
+              amountSecondsPassed,
+              markCurrentCycleAsFinished,
+              setSecondsPassed,
+
             }),
           [activeCycle, activeCycleId, markCurrentCycleAsFinished],
         )}
