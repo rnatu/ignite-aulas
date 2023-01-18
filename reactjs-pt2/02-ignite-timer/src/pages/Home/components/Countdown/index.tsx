@@ -49,7 +49,7 @@ export function CountDown() {
     return () => {
       clearInterval(interval);
     };
-  }, [activeCycle, totalSeconds, activeCycleId, markCurrentCycleAsFinished]);
+  }, [activeCycle, activeCycleId, markCurrentCycleAsFinished]);
 
   useEffect(() => {
     if (activeCycle) {

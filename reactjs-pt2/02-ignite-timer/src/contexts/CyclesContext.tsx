@@ -1,5 +1,5 @@
 import {
-  createContext, ReactNode, useMemo, useState,
+  createContext, ReactNode, useCallback, useMemo, useState,
 } from 'react';
 
 interface CreateCycleData {
@@ -17,6 +17,7 @@ interface Cycle {
 }
 
 interface CyclesContextType {
+  cycles: Cycle[]
   activeCycle: Cycle | undefined;
   activeCycleId: string | null,
   amountSecondsPassed: number,
@@ -39,14 +40,22 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
-  function markCurrentCycleAsFinished() {
+  const markCurrentCycleAsFinished = useCallback(() => {
     setCycles((state) => state.map((cycle) => {
       if (cycle.id === activeCycleId) {
         return { ...cycle, finishedDate: new Date() };
       }
       return cycle;
     }));
-  }
+  }, []);
+  // function markCurrentCycleAsFinished() {
+  //   setCycles((state) => state.map((cycle) => {
+  //     if (cycle.id === activeCycleId) {
+  //       return { ...cycle, finishedDate: new Date() };
+  //     }
+  //     return cycle;
+  //   }));
+  // }
 
   function setSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds);
@@ -85,6 +94,7 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
     <cyclesContext.Provider value={useMemo(
       () => (
         {
+          cycles,
           activeCycle,
           activeCycleId,
           amountSecondsPassed,
@@ -95,6 +105,7 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
 
         }),
       [
+        cycles,
         activeCycle,
         activeCycleId,
         amountSecondsPassed,
