@@ -1,7 +1,7 @@
 import { differenceInSeconds } from 'date-fns';
 import { useContext, useEffect } from 'react';
 // eslint-disable-next-line import/no-cycle
-import { cyclesContext } from '../..';
+import { cyclesContext } from '../../../../contexts/CyclesContext';
 import { CountDownContainer, Separator } from './styles';
 
 export function CountDown() {

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormContainer, MinutesAmountInput, TaskInput } from './styles';
 // eslint-disable-next-line import/no-cycle
-import { cyclesContext } from '../..';
+import { cyclesContext } from '../../../../contexts/CyclesContext';
 
 const datalistOption = [
   {
