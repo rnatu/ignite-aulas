@@ -1,10 +1,8 @@
 import { HandPalm, Play } from 'phosphor-react';
 import * as zod from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  createContext, useMemo, useState,
-} from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useContext } from 'react';
 import {
   HomeContainer,
   StartCountDownButton,
@@ -14,6 +12,7 @@ import {
 import { NewCycleForm } from './components/NewCycleForm';
 // eslint-disable-next-line import/no-cycle
 import { CountDown } from './components/Countdown';
+import { cyclesContext } from '../../contexts/CyclesContext';
 
 const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, 'Informe a tarefa'),
@@ -23,6 +22,8 @@ const newCycleFormValidationSchema = zod.object({
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
 
 export function Home() {
+  const { createNewCycle, activeCycle, interruptCurrentCycle } = useContext(cyclesContext);
+
   const newCycleForm = useForm<NewCycleFormData>({
     defaultValues: {
       task: '',
@@ -31,7 +32,7 @@ export function Home() {
     resolver: zodResolver(newCycleFormValidationSchema),
   });
 
-  const { handleSubmit, watch, reset } = newCycleForm;
+  const { handleSubmit, watch /* reset */ } = newCycleForm;
 
   /* o watch transforma o input com o name task em um controlled input,
   monitorando qualquer mudança */
@@ -41,7 +42,7 @@ export function Home() {
   return (
 
     <HomeContainer>
-      <form action="" onSubmit={handleSubmit(handleCreateNewCycle)}>
+      <form action="" onSubmit={handleSubmit(createNewCycle)}>
 
         <FormProvider {...newCycleForm}>
           <NewCycleForm />
@@ -50,7 +51,7 @@ export function Home() {
         <CountDown />
 
         {activeCycle ? (
-          <StopCountDownButton onClick={() => handleInterruptCycle()} type="button">
+          <StopCountDownButton onClick={() => interruptCurrentCycle()} type="button">
             <HandPalm size={24} />
             Interromper
           </StopCountDownButton>
