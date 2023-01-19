@@ -47,7 +47,9 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
       }
       return cycle;
     }));
-  }, []);
+    setActiveCycleId(null);
+  }, [activeCycleId]);
+
   // function markCurrentCycleAsFinished() {
   //   setCycles((state) => state.map((cycle) => {
   //     if (cycle.id === activeCycleId) {
@@ -55,6 +57,8 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
   //     }
   //     return cycle;
   //   }));
+  //   setActiveCycleId(null);
+  //   console.log('markCurrentCycleAsFinished');
   // }
 
   function setSecondsPassed(seconds: number) {
