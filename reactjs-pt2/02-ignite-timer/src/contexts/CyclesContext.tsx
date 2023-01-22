@@ -91,30 +91,23 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
     setActiveCycleId(null);
   }
 
+  const contextValues = {
+    cycles,
+    activeCycle,
+    activeCycleId,
+    amountSecondsPassed,
+    markCurrentCycleAsFinished,
+    setSecondsPassed,
+    createNewCycle,
+    interruptCurrentCycle,
+  };
+
   return (
     <cyclesContext.Provider value={useMemo(
       () => (
-        {
-          cycles,
-          activeCycle,
-          activeCycleId,
-          amountSecondsPassed,
-          markCurrentCycleAsFinished,
-          setSecondsPassed,
-          createNewCycle,
-          interruptCurrentCycle,
-
-        }),
-      [
-        cycles,
-        activeCycle,
-        activeCycleId,
-        amountSecondsPassed,
-        markCurrentCycleAsFinished,
-        setSecondsPassed,
-        createNewCycle,
-        interruptCurrentCycle,
-      ],
+        { ...contextValues }
+      ),
+      [{ ...contextValues }],
     )}
     >
       {children}
