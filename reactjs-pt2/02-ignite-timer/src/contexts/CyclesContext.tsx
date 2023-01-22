@@ -104,10 +104,8 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
 
   return (
     <cyclesContext.Provider value={useMemo(
-      () => (
-        { ...contextValues }
-      ),
-      [{ ...contextValues }],
+      () => (contextValues),
+      [contextValues],
     )}
     >
       {children}
