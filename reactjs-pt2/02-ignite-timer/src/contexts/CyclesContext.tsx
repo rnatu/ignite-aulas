@@ -1,5 +1,5 @@
 import {
-  createContext, ReactNode, useCallback, useMemo, useState,
+  createContext, ReactNode, useCallback, useMemo, useReducer, useState,
 } from 'react';
 
 interface CreateCycleData {
@@ -34,7 +34,9 @@ interface CyclesContextProviderProps {
 }
 
 export function CyclesContextProvider({ children }: CyclesContextProviderProps) {
-  const [cycles, setCycles] = useState<Cycle[]>([]);
+  const [cycles, setCycles] = useReducer((state, action) => state, []);
+
+  useState<Cycle[]>([]);
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0);
 
