@@ -34,7 +34,19 @@ interface CyclesContextProviderProps {
 }
 
 export function CyclesContextProvider({ children }: CyclesContextProviderProps) {
-  const [cycles, setCycles] = useReducer((state, action) => state, []);
+  // % Usando state
+  // const [cycles, setCycles] = useState<Cycle[]>([]);
+  // % Usando reducer
+  const [cycles, dispatch] = useReducer((state: Cycle[], action: any) => {
+    console.log(state);
+    console.log(action);
+
+    if (action.type === 'ADD_NEW_CYCLE') {
+      return [...state, action.payload.newCycle];
+    }
+
+    return state;
+  }, []);
 
   useState<Cycle[]>([]);
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null);
@@ -43,25 +55,21 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
   const markCurrentCycleAsFinished = useCallback(() => {
-    setCycles((state) => state.map((cycle) => {
-      if (cycle.id === activeCycleId) {
-        return { ...cycle, finishedDate: new Date() };
-      }
-      return cycle;
-    }));
+    // % Usando state
+    // setCycles((state) => state.map((cycle) => {
+    //   if (cycle.id === activeCycleId) {
+    //     return { ...cycle, finishedDate: new Date() };
+    //   }
+    //   return cycle;
+    // }));
+    // % Usando reducer
+    dispatch({
+      type: 'MARK_CURRENT_CYCLE_AS_FINISHED',
+      activeCycleId,
+    });
+
     setActiveCycleId(null);
   }, [activeCycleId]);
-
-  // function markCurrentCycleAsFinished() {
-  //   setCycles((state) => state.map((cycle) => {
-  //     if (cycle.id === activeCycleId) {
-  //       return { ...cycle, finishedDate: new Date() };
-  //     }
-  //     return cycle;
-  //   }));
-  //   setActiveCycleId(null);
-  //   console.log('markCurrentCycleAsFinished');
-  // }
 
   function setSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds);
@@ -77,18 +85,35 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
       startDate: new Date(),
     };
 
-    setCycles((state) => [...state, newCycle]);
+    // % Usando state
+    // setCycles((state) => [...state, newCycle]);
+    // % Usando reducer
+    dispatch({
+      type: 'ADD_NEW_CYCLE',
+      payload: {
+        newCycle,
+      },
+    });
+
     setActiveCycleId(id);
     setAmountSecondsPassed(0);
   }
 
   function interruptCurrentCycle() {
-    setCycles((state) => state.map((cycle) => {
-      if (cycle.id === activeCycleId) {
-        return { ...cycle, interruptedDate: new Date() };
-      }
-      return cycle;
-    }));
+    // % Usando state
+    // setCycles((state) => state.map((cycle) => {
+    //   if (cycle.id === activeCycleId) {
+    //     return { ...cycle, interruptedDate: new Date() };
+    //   }
+    //   return cycle;
+    // }));
+    // % Usando reducer
+    dispatch({
+      type: 'INTERRUPT_CURRENT_CYCLE',
+      payload: {
+        activeCycleId,
+      },
+    });
 
     setActiveCycleId(null);
   }
