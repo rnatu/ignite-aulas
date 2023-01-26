@@ -1,7 +1,17 @@
 import {
-  createContext, ReactNode, useCallback, useMemo, useReducer, useState,
+  createContext,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useReducer,
+  useState,
 } from 'react';
-import { ActionTypes, Cycle, cyclesReducer } from '../reducers/cycles';
+import {
+  addNewCycleAction,
+  interruptCurrentCycleAction,
+  markCurrentCycleAsFinishedAction,
+} from '../reducers/cycles/action';
+import { Cycle, cyclesReducer } from '../reducers/cycles/reducer';
 
 interface CreateCycleData {
   task: string;
@@ -57,12 +67,7 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
     // setCycles((state) => [...state, newCycle]);
     // setActiveCycleId(id);
     // % Usando reducer
-    dispatch({
-      type: ActionTypes.ADD_NEW_CYCLE,
-      payload: {
-        newCycle,
-      },
-    });
+    dispatch(addNewCycleAction(newCycle));
 
     setAmountSecondsPassed(0);
   }
@@ -77,9 +82,7 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
     // }));
     // setActiveCycleId(null);
     // % Usando reducer
-    dispatch({
-      type: ActionTypes.INTERRUPT_CURRENT_CYCLE,
-    });
+    dispatch(interruptCurrentCycleAction());
   }
 
   const markCurrentCycleAsFinished = useCallback(() => {
@@ -92,10 +95,7 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
     // }));
     // setActiveCycleId(null);
     // % Usando reducer
-    dispatch({
-      type: ActionTypes.MARK_CURRENT_CYCLE_AS_FINISHED,
-      activeCycleId,
-    });
+    dispatch(markCurrentCycleAsFinishedAction());
   }, [activeCycleId]);
 
   function setSecondsPassed(seconds: number) {
