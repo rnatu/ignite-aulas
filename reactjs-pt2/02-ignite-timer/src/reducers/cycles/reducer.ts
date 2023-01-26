@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { ActionTypes } from './action';
 
 export interface Cycle {
@@ -40,7 +41,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
         ...state,
         cycles: state.cycles.map((cycle) => {
           if (cycle.id === state.activeCycleId) {
-            return { ...cycle, interruptedDate: new Date() };
+            return { ...cycle, finishedDate: new Date() };
           }
           return cycle;
         }),
