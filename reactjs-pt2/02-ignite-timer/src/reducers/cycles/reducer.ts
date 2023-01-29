@@ -58,6 +58,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
         draft.cycles[currentCycleIndex].interruptedDate = new Date();
         // eslint-disable-next-line no-param-reassign
         draft.activeCycleId = null;
+        return draft;
       });
 
     case ActionTypes.MARK_CURRENT_CYCLE_AS_FINISHED:
