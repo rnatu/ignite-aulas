@@ -34,16 +34,31 @@ export function cyclesReducer(state: CyclesState, action: any) {
       });
 
     case ActionTypes.INTERRUPT_CURRENT_CYCLE:
-      return {
-        ...state,
-        cycles: state.cycles.map((cycle) => {
-          if (cycle.id === state.activeCycleId) {
-            return { ...cycle, interruptedDate: new Date() };
-          }
-          return cycle;
-        }),
-        activeCycleId: null,
-      };
+      // % Sem immer
+      // return {
+      //   ...state,
+      //   cycles: state.cycles.map((cycle) => {
+      //     if (cycle.id === state.activeCycleId) {
+      //       return { ...cycle, interruptedDate: new Date() };
+      //     }
+      //     return cycle;
+      //   }),
+      //   activeCycleId: null,
+      // };
+      return produce(state, (draft) => {
+        const currentCycleIndex = state.cycles.findIndex(
+          (cycle) => cycle.id === state.activeCycleId,
+        );
+
+        if (currentCycleIndex < 0) {
+          return state;
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        draft.cycles[currentCycleIndex].interruptedDate = new Date();
+        // eslint-disable-next-line no-param-reassign
+        draft.activeCycleId = null;
+      });
 
     case ActionTypes.MARK_CURRENT_CYCLE_AS_FINISHED:
       return {
