@@ -29,6 +29,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
       // % Com immer
       return produce(state, (draft) => {
         draft.cycles.push(action.payload.newCycle);
+        // eslint-disable-next-line no-param-reassign
         draft.activeCycleId = action.payload.newCycle.id;
       });
 
