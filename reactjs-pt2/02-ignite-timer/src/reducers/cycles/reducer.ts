@@ -45,6 +45,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
       //   }),
       //   activeCycleId: null,
       // };
+      // % Com immer
       return produce(state, (draft) => {
         const currentCycleIndex = state.cycles.findIndex(
           (cycle) => cycle.id === state.activeCycleId,
@@ -62,6 +63,18 @@ export function cyclesReducer(state: CyclesState, action: any) {
       });
 
     case ActionTypes.MARK_CURRENT_CYCLE_AS_FINISHED:
+      // % Sem immer
+      // return {
+      //   ...state,
+      //   cycles: state.cycles.map((cycle) => {
+      //     if (cycle.id === state.activeCycleId) {
+      //       return { ...cycle, finishedDate: new Date() };
+      //     }
+      //     return cycle;
+      //   }),
+      //   activeCycleId: null,
+      // };
+      // % Com immer
       return produce(state, (draft) => {
         const currentCycleIndex = state.cycles.findIndex(
           (cycle) => cycle.id === state.activeCycleId,

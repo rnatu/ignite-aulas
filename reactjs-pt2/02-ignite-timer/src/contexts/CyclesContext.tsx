@@ -2,6 +2,7 @@ import {
   createContext,
   ReactNode,
   useCallback,
+  useEffect,
   useMemo,
   useReducer,
   useState,
@@ -45,9 +46,13 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
     activeCycleId: null,
   });
 
-  useState<Cycle[]>([]);
-
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0);
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(cyclesState);
+
+    localStorage.setItem('@ignite-timer: cycles-state-1.0.0', stateJSON);
+  }, [cyclesState]);
 
   const { cycles, activeCycleId } = cyclesState;
 
