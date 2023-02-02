@@ -8,9 +8,9 @@ import {
   StartCountDownButton,
   StopCountDownButton,
 } from './styles';
-// eslint-disable-next-line import/no-cycle
+
 import { NewCycleForm } from './components/NewCycleForm';
-// eslint-disable-next-line import/no-cycle
+
 import { CountDown } from './components/Countdown';
 import { cyclesContext } from '../../contexts/CyclesContext';
 

@@ -11,6 +11,8 @@ export function App() {
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyle />
 
+      sd
+
       <BrowserRouter>
         <CyclesContextProvider>
           <Router />
