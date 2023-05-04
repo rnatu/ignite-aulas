@@ -50,7 +50,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme['gray-100']}
+    background: ${({ theme }) => theme['gray-700']}
   }
   
   ::-webkit-scrollbar-thumb {
