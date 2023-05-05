@@ -16,4 +16,22 @@ export const SummaryContainer = styled.section`
   margin-top: -5rem;
 `;
 
-export const SummaryCard = styled.div``;
+export const SummaryCard = styled.div`
+  background: ${props => props.theme["gray-600"]};
+  border-radius: 6px;
+  padding: 2rem;
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: ${props => props.theme["gray-300"]};
+  }
+
+  strong {
+    display: block;
+    margin-top: 1rem;
+    font-size: 2rem;
+  }
+`;
