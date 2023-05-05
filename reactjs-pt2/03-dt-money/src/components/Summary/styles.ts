@@ -15,3 +15,5 @@ export const SummaryContainer = styled.section`
 
   margin-top: -5rem;
 `;
+
+export const SummaryCard = styled.div``;
