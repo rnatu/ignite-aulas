@@ -13,9 +13,7 @@ export const TransactionsTable = styled.table`
   //! talvez não precise
   /* border-collapse: separate; */
   border-spacing: 0 0.5rem;
-
-  //! margin para barra de busca
-  /* margin-top: 1.5rem; */
+  margin-top: 1.5rem;
 
   td {
     padding: 1.25rem 2rem;
