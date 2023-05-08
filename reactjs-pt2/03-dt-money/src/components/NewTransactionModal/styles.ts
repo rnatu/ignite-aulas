@@ -59,7 +59,7 @@ export const Content = styled(Dialog.Content)`
 
     &:hover {
       background-color: ${props => props.theme["green-700"]};
-      transition: background-color .2s;
+      /* transition: background-color .2s; //definido no css global */
     }
   }
 `;
@@ -72,7 +72,6 @@ export const CloseButton = styled(Dialog.Close)`
   top: 1.5rem;
   right: 1.5rem;
 
-  line-height: 0;
   cursor: pointer;
   color: ${props => props.theme["gray-500"]}
 `;

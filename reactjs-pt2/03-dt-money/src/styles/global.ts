@@ -22,8 +22,12 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   button {
+    line-height: 0; 
     cursor: pointer;
-    transition: .3s;
+   
+    &:hover {
+      transition: background-color .2s;
+    }
 
     &:disabled {
       cursor: not-allowed;
