@@ -5,9 +5,6 @@ import { SearchForm } from "./components/SearchForm";
 import { PriceHighLight, TransactionsContainer, TransactionsTable } from "./styles";
 import { useContext } from 'react'
 
-
-
-
 export function Transactions() {
   const { transactions } = useContext(TransactionsContext);
 
