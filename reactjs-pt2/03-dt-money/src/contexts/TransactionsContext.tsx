@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import { api } from '../lib/axios';
 
 interface Transaction {
@@ -27,14 +27,13 @@ interface TransactionsProviderProps {
   children: ReactNode;
 }
 
-
 export const TransactionsContext = createContext({} as TransactionContextType);
 
 export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   async function fetchTransactions(query?: string) {
-    //% */ usando fetch
+    // % */ usando fetch
     // const url = new URL('http://localhost:3333/transactions')
     // if (query) {
     //   url.searchParams.append('q', query);
@@ -46,7 +45,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         _sort: 'createdAt',
         _order: 'desc',
         q: query,
-      }
+      },
     });
 
     setTransactions(response.data);
@@ -56,29 +55,31 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     const { description, price, category, type } = data;
 
     const response = await api.post('/transactions', {
-      //o id o JSON Server cria automaticamente
+      // o id o JSON Server cria automaticamente
       description,
       price,
       category,
       type,
-      //em um backend o createdAt seria criado pelo backend
+      // em um backend o createdAt seria criado pelo backend
       createdAt: new Date(),
-    })
+    });
 
     setTransactions((oldState) => [...oldState, response.data]);
   }
 
   useEffect(() => {
-    fetchTransactions()
-  }, [])
+    fetchTransactions();
+  }, []);
 
   return (
-    <TransactionsContext.Provider value={{
-      transactions,
-      fetchTransactions,
-      createTransaction
-    }}>
+    <TransactionsContext.Provider
+      value={{
+        transactions,
+        fetchTransactions,
+        createTransaction,
+      }}
+    >
       {children}
     </TransactionsContext.Provider>
-  )
+  );
 }
