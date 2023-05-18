@@ -70,8 +70,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
 
   useEffect(() => {
     fetchTransactions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchTransactions]);
 
   return (
     <TransactionsContext.Provider
