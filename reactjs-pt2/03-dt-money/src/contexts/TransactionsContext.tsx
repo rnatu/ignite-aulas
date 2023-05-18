@@ -22,6 +22,7 @@ interface TransactionContextType {
   transactions: Transaction[];
   fetchTransactions: (query?: string) => Promise<void>;
   createTransaction: (data: CreateTransactionData) => Promise<void>;
+  isLoading: boolean;
 }
 
 interface TransactionsProviderProps {
@@ -32,6 +33,7 @@ export const TransactionsContext = createContext({} as TransactionContextType);
 
 export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchTransactions = useCallback(async (query?: string) => {
     // % */ usando fetch
@@ -41,6 +43,8 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     // }
     // const response = await fetch(url)
     // const data = await response.json()
+    setIsLoading(true);
+
     const response = await api.get('/transactions', {
       params: {
         _sort: 'createdAt',
@@ -49,12 +53,14 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       },
     });
 
+    setIsLoading(false);
     setTransactions(response.data);
   }, []);
 
   const createTransaction = useCallback(async (data: CreateTransactionData) => {
     const { description, price, category, type } = data;
 
+    setIsLoading(true);
     const response = await api.post('/transactions', {
       // o id o JSON Server cria automaticamente
       description,
@@ -65,6 +71,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       createdAt: new Date(),
     });
 
+    setIsLoading(false);
     setTransactions((oldState) => [...oldState, response.data]);
   }, []);
 
@@ -78,6 +85,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         transactions,
         fetchTransactions,
         createTransaction,
+        isLoading,
       }}
     >
       {children}
