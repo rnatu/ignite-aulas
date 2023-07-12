@@ -15,6 +15,7 @@ export const Product = styled("a", {
   borderRadius: 8,
   padding: "0.25rem",
   cursor: "pointer",
+  overflow: "hidden",
 
   position: "relative",
 
@@ -31,7 +32,7 @@ export const Product = styled("a", {
     bottom: "0.25rem",
     left: "0.25rem",
     right: "0.25rem",
-    padding: '2rem',
+    padding: "2rem",
 
     borderRadius: 6,
 
@@ -41,6 +42,25 @@ export const Product = styled("a", {
 
     backgroundColor: "rgba(0, 0, 0, 0.6)",
 
-   
+    transform: "translateY(100%)",
+    opacity: 0,
+    transition: "all 0.2s ease-in-out",
+
+    strong: {
+      fontSize: "$lg",
+    },
+
+    span: {
+      fontSize: "$xl",
+      fontWeight: "bold",
+      color: "$green300",
+    },
+  },
+
+  "&:hover": {
+    footer: {
+      transform: "translateY(0%)",
+      opacity: 1,
+    },
   },
 });
