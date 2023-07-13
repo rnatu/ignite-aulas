@@ -63,3 +63,13 @@ export const Product = styled("a", {
     },
   },
 });
+
+export const ArrowContainer = styled("div", {
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+});
