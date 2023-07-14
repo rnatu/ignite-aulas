@@ -1,11 +1,27 @@
 import { styled } from "..";
 
-export const HomeContainer = styled("main", {
-  display: "flex",
-
-  width: "100%",
+export const NavigationWrapper = styled("div", {
   maxWidth: "calc(100vw - ((100vw - 1180px) / 2))",
   marginLeft: "auto",
+
+  display: "flex",
+  alignItems: "center",
+
+  position: "relative",
+
+  ".arrow": {
+    position: "absolute",
+    cursor: "pointer",
+  },
+
+  ".arrow.right": {
+    right: 0,
+  },
+});
+
+export const HomeContainer = styled("main", {
+  display: "flex",
+  width: "100%",
   minHeight: "656",
 });
 

@@ -1,14 +1,17 @@
-import { HomeContainer, Product, ArrowContainer } from "../styles/pages/home";
+import React, { useState } from "react";
+import { useKeenSlider } from "keen-slider/react";
 import Image from "next/image";
+import {
+  NavigationWrapper,
+  HomeContainer,
+  Product,
+} from "../styles/pages/home";
+import "keen-slider/keen-slider.min.css";
 import camiseta1 from "../assets/camisetas/1.png";
 import camiseta2 from "../assets/camisetas/2.png";
 import camiseta3 from "../assets/camisetas/3.png";
 import leftArrow from "../assets/left-arrow-icon.png";
 import rightArrow from "../assets/right-arrow-icon.png";
-
-import "keen-slider/keen-slider.min.css";
-import { useKeenSlider } from "keen-slider/react";
-import { useState } from "react";
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -23,71 +26,97 @@ export default function Home() {
     },
   });
 
-  console.log(instanceRef.current?.slides.length === currentSlide + 2);
+  const handlePrevSlide = (e: any) => {
+    e.stopPropagation();
+    instanceRef.current?.prev();
+  };
+
+  const handleNextSlide = (e: any) => {
+    e.stopPropagation();
+    instanceRef.current?.next();
+  };
 
   return (
-    <HomeContainer ref={sliderRef} className="keen-slider navigation-wrapper">
-      <Product className="keen-slider__slide">
-        <Image src={camiseta1} width={520} height={480} alt="" />
+    <NavigationWrapper className="navigation-wrapper">
+      <HomeContainer ref={sliderRef} className="keen-slider">
+        <Product className="keen-slider__slide">
+          <Image src={camiseta1} width={520} height={480} alt="" />
 
-        <footer>
-          <strong>Camiseta X</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </Product>
+          <footer>
+            <strong>Camiseta X</strong>
+            <span>R$ 79,90</span>
+          </footer>
+        </Product>
 
-      <Product className="keen-slider__slide">
-        <Image src={camiseta2} width={520} height={480} alt="" />
+        <Product className="keen-slider__slide">
+          <Image src={camiseta2} width={520} height={480} alt="" />
 
-        <footer>
-          <strong>Camiseta X</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </Product>
+          <footer>
+            <strong>Camiseta X</strong>
+            <span>R$ 79,90</span>
+          </footer>
+        </Product>
 
-      <Product className="keen-slider__slide">
-        <Image src={camiseta3} width={520} height={480} alt="" />
+        <Product className="keen-slider__slide">
+          <Image src={camiseta3} width={520} height={480} alt="" />
 
-        <footer>
-          <strong>Camiseta X</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </Product>
+          <footer>
+            <strong>Camiseta X</strong>
+            <span>R$ 79,90</span>
+          </footer>
+        </Product>
 
-      <Product className="keen-slider__slide">
-        <Image src={camiseta3} width={520} height={480} alt="" />
+        <Product className="keen-slider__slide">
+          <Image src={camiseta3} width={520} height={480} alt="" />
 
-        <footer>
-          <strong>Camiseta X</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </Product>
-      <Product className="keen-slider__slide">
-        <Image src={camiseta3} width={520} height={480} alt="" />
+          <footer>
+            <strong>Camiseta X</strong>
+            <span>R$ 79,90</span>
+          </footer>
+        </Product>
+        <Product className="keen-slider__slide">
+          <Image src={camiseta3} width={520} height={480} alt="" />
 
-        <footer>
-          <strong>Camiseta X</strong>
-          <span>R$ 79,90</span>
-        </footer>
-      </Product>
+          <footer>
+            <strong>Camiseta X</strong>
+            <span>R$ 79,90</span>
+          </footer>
+        </Product>
+      </HomeContainer>
 
-      <ArrowContainer>
-        <Arrow
-          left
-          visible={currentSlide !== 0}
-          onClick={(e: any) =>
-            e.stopPropagation() || instanceRef.current?.prev()
-          }
+      <div
+        className="arrow"
+        style={{
+          visibility: currentSlide === 0 ? "hidden" : "initial",
+        }}
+      >
+        <Image
+          src={leftArrow}
+          width={48}
+          height={48}
+          alt=""
+          onClick={handlePrevSlide}
         />
+      </div>
 
-        <Arrow
-          visible={instanceRef.current?.slides.length !== currentSlide + 2}
-          onClick={(e: any) =>
-            e.stopPropagation() || instanceRef.current?.next()
-          }
+      <div
+        className="arrow right"
+        style={{
+          visibility:
+            instanceRef.current?.slides.length === currentSlide + 2
+              ? "hidden"
+              : "initial",
+        }}
+      >
+        <Image
+          src={rightArrow}
+          width={48}
+          height={48}
+          alt=""
+          onClick={handleNextSlide}
         />
-      </ArrowContainer>
-    </HomeContainer>
+      </div>
+    </NavigationWrapper>
   );
 }
 
