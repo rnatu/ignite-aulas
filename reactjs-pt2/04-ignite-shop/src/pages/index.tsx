@@ -7,11 +7,10 @@ import {
   Product,
 } from "../styles/pages/home";
 import "keen-slider/keen-slider.min.css";
-import camiseta1 from "../assets/camisetas/1.png";
 import leftArrow from "../assets/left-arrow-icon.png";
 import rightArrow from "../assets/right-arrow-icon.png";
 import { stripe } from "@/lib/stripe";
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import Stripe from "stripe";
 
 interface HomeProps {
@@ -99,35 +98,7 @@ export default function Home({ products }: HomeProps) {
   );
 }
 
-function Arrow(props: {
-  left?: boolean;
-  visible: boolean;
-  onClick?: (e: any) => void;
-}) {
-  return (
-    <div style={{ visibility: props.visible ? undefined : "hidden" }}>
-      {props.left ? (
-        <Image
-          src={leftArrow}
-          width={48}
-          height={48}
-          alt=""
-          onClick={props.onClick}
-        />
-      ) : (
-        <Image
-          src={rightArrow}
-          width={48}
-          height={48}
-          alt=""
-          onClick={props.onClick}
-        />
-      )}
-    </div>
-  );
-}
-
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
     expand: ["data.default_price"],
   });
@@ -146,5 +117,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       products,
     },
+    revalidate: 60 * 60 * 2 //em segundos = 2 horas
   };
 };
