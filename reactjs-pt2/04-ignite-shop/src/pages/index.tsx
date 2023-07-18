@@ -109,7 +109,13 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: price.unit_amount && price.unit_amount / 100, //como foi fito o expand, e a tipagem do expand para o price, ele ira trazer todas as opções no auto complete. Obs, unit_amount é em centavos.
+      price:
+        price.unit_amount &&
+        new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(price.unit_amount / 100),
+      //como foi fito o expand, e a tipagem do expand para o price, ele ira trazer todas as opções no auto complete. Obs, unit_amount é em centavos.
     };
   });
 
@@ -117,6 +123,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       products,
     },
-    revalidate: 60 * 60 * 2 //em segundos = 2 horas
+    revalidate: 60 * 60 * 2, //em segundos = 2 horas
   };
 };
