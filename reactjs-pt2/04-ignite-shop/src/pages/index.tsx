@@ -19,7 +19,7 @@ interface HomeProps {
     id: string;
     name: string;
     imageUrl: string;
-    price: number;
+    price: string;
   }[];
 }
 
@@ -118,7 +118,7 @@ export const getStaticProps: GetStaticProps = async () => {
           style: "currency",
           currency: "BRL",
         }).format(price.unit_amount / 100),
-      //como foi fito o expand, e a tipagem do expand para o price, ele ira trazer todas as opções no auto complete. Obs, unit_amount é em centavos.
+      //como foi feito o expand, e a tipagem do expand para o price, ele ira trazer todas as opções no auto complete. Obs, unit_amount é em centavos.
     };
   });
 
