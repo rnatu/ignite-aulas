@@ -4,7 +4,7 @@ import {
   ProductContainer,
   ProductDetails,
 } from "@/styles/pages/product";
-import { GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Stripe from "stripe";
@@ -16,31 +16,36 @@ interface ProductProps {
     imageUrl: string;
     price: string;
     description: string;
-  }
+  };
 }
 
 export default function Product({ product }: ProductProps) {
   // const { query } = useRouter();
-  
+
   return (
     <ProductContainer>
       <ImageContainer>
-        <Image src={product.imageUrl} width={520} height={480} alt=""/>
+        <Image src={product.imageUrl} width={520} height={480} alt="" />
       </ImageContainer>
 
       <ProductDetails>
         <h1>{product.name}</h1>
         <span>{product.price}</span>
 
-        <p>
-          {product.description}
-        </p>
+        <p>{product.description}</p>
 
         <button>Comprar agora</button>
       </ProductDetails>
     </ProductContainer>
   );
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [{ params: { id: "prod_OH7h4NHpkhG1Nc" } }],
+    fallback: false,
+  };
+};
 
 export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
   params,
