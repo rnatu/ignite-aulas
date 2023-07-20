@@ -22,6 +22,12 @@ interface ProductProps {
 export default function Product({ product }: ProductProps) {
   // const { query } = useRouter();
 
+  const { isFallback } = useRouter();
+
+  if (isFallback) {
+    return <p>Loading...</p>
+  }
+
   return (
     <ProductContainer>
       <ImageContainer>
@@ -41,9 +47,20 @@ export default function Product({ product }: ProductProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  // Buscar os produtos mais vendidos / mais acessados / mais essenciais 
+
   return {
-    paths: [{ params: { id: "prod_OH7h4NHpkhG1Nc" } }],
-    fallback: false,
+
+    paths: [
+      {
+        params:
+          //(Buscar os produtos mais vendidos / mais acessados / mais essenciais) ou deixar vazio se preferir
+          { id: "prod_OH7h4NHpkhG1Nc" }  // prod_OH7h4NHpkhG1Nc (id do produto no stripe)
+      }
+    ],
+    // fallback: false, // false -> 404
+    fallback: true, // true -> executa o getStaticProps com o novo parâmetro passado (Necessita de um loader no caso)
+    // fallback: "blocking", // blocking -> não carrega direciona para a página enquanto as informações estão sendo carregadas
   };
 };
 
