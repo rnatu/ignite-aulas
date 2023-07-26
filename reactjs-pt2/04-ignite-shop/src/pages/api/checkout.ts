@@ -6,13 +6,13 @@ interface SuccessResponse {
   checkoutUrl: string | null;
 }
 
-type ErrorMessage = {
+type ErrorResponse = {
   error: string;
 };
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<SuccessResponse | ErrorMessage>
+  res: NextApiResponse<SuccessResponse | ErrorResponse>
 ) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -26,8 +26,8 @@ export default async function handler(
     });
   }
 
-  const successUrl = `${process.env.NEXT_URL}/success`;
   const cancelUrl = `${process.env.NEXT_URL}/`;
+  const successUrl = `${process.env.NEXT_URL}/success?session_id={CHECKOUT_SESSION_ID}`; //https://stripe.com/docs/payments/checkout/custom-success-page
 
   const checkoutSession = await stripe.checkout.sessions.create({
     success_url: successUrl,
