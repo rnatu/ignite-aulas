@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { useKeenSlider } from "keen-slider/react";
+import { GetStaticProps } from "next";
 import Image from "next/image";
+import { useKeenSlider } from "keen-slider/react";
+import Link from "next/link";
+import Head from "next/head";
 import {
   NavigationWrapper,
   HomeContainer,
@@ -10,9 +13,7 @@ import "keen-slider/keen-slider.min.css";
 import leftArrow from "../assets/left-arrow-icon.png";
 import rightArrow from "../assets/right-arrow-icon.png";
 import { stripe } from "@/lib/stripe";
-import { GetStaticProps } from "next";
 import Stripe from "stripe";
-import Link from "next/link";
 
 interface HomeProps {
   products: {
@@ -47,57 +48,68 @@ export default function Home({ products }: HomeProps) {
   };
 
   return (
-    <NavigationWrapper className="navigation-wrapper">
-      <HomeContainer ref={sliderRef} className="keen-slider">
-        {products.map((product) => {
-          return (
-            <Link href={`/product/${product.id}`} key={product.id} >
-              <Product className="keen-slider__slide">
-                <Image src={product.imageUrl} width={520} height={480} alt="" />
+    <>
+      <Head>
+        <title>Home | Ignite Shop</title>
+      </Head>
 
-                <footer>
-                  <strong>{product.name}</strong>
-                  <span>{product.price}</span>
-                </footer>
-              </Product>
-            </Link>
-          );
-        })}
-      </HomeContainer>
+      <NavigationWrapper className="navigation-wrapper">
+        <HomeContainer ref={sliderRef} className="keen-slider">
+          {products.map((product) => {
+            return (
+              <Link href={`/product/${product.id}`} key={product.id}>
+                <Product className="keen-slider__slide">
+                  <Image
+                    src={product.imageUrl}
+                    width={520}
+                    height={480}
+                    alt=""
+                  />
 
-      <div
-        className="arrow"
-        style={{
-          visibility: currentSlide === 0 ? "hidden" : "initial",
-        }}
-      >
-        <Image
-          src={leftArrow}
-          width={48}
-          height={48}
-          alt=""
-          onClick={handlePrevSlide}
-        />
-      </div>
+                  <footer>
+                    <strong>{product.name}</strong>
+                    <span>{product.price}</span>
+                  </footer>
+                </Product>
+              </Link>
+            );
+          })}
+        </HomeContainer>
 
-      <div
-        className="arrow right"
-        style={{
-          visibility:
-            instanceRef.current?.slides.length === currentSlide + 2
-              ? "hidden"
-              : "initial",
-        }}
-      >
-        <Image
-          src={rightArrow}
-          width={48}
-          height={48}
-          alt=""
-          onClick={handleNextSlide}
-        />
-      </div>
-    </NavigationWrapper>
+        <div
+          className="arrow"
+          style={{
+            visibility: currentSlide === 0 ? "hidden" : "initial",
+          }}
+        >
+          <Image
+            src={leftArrow}
+            width={48}
+            height={48}
+            alt=""
+            onClick={handlePrevSlide}
+          />
+        </div>
+
+        <div
+          className="arrow right"
+          style={{
+            visibility:
+              instanceRef.current?.slides.length === currentSlide + 2
+                ? "hidden"
+                : "initial",
+          }}
+        >
+          <Image
+            src={rightArrow}
+            width={48}
+            height={48}
+            alt=""
+            onClick={handleNextSlide}
+          />
+        </div>
+      </NavigationWrapper>
+    </>
   );
 }
 
