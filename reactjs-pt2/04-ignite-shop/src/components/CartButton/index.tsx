@@ -1,10 +1,13 @@
 import { Handbag } from "@phosphor-icons/react";
 import { CartButtonContainer } from "./styles";
+import { ButtonHTMLAttributes, ComponentProps } from "react";
 
-export function CartButton() {
+interface CartButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> { }
+
+export function CartButton({ ...rest }: CartButtonProps) {
   return (
-    <CartButtonContainer>
-      <Handbag weight="bold"/>
+    <CartButtonContainer {...rest}>
+      <Handbag weight="bold" />
     </CartButtonContainer>
   )
 }

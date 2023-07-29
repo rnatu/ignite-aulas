@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "../../styles/index";
 
 export const HeaderContainer = styled("header", {
   padding: "2rem 0",

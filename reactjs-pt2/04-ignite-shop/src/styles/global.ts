@@ -4,8 +4,8 @@ export const globalStyles = globalCss({
   "*": {
     margin: 0,
     padding: 0,
-    'box-sizing': 'border-box',
-    'scroll-behavior': 'smooth',
+    "box-sizing": "border-box",
+    "scroll-behavior": "smooth",
   },
 
   body: {
@@ -17,5 +17,9 @@ export const globalStyles = globalCss({
   "body, input, textarea, button": {
     fontFamily: "Roboto",
     fontWeight: 400,
+  },
+
+  button: {
+    cursor: "pointer",
   },
 });
