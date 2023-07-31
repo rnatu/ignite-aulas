@@ -14,6 +14,7 @@ import leftArrow from "../assets/left-arrow-icon.png";
 import rightArrow from "../assets/right-arrow-icon.png";
 import { stripe } from "@/lib/stripe";
 import Stripe from "stripe";
+import { CartButton } from "@/components/CartButton";
 
 interface HomeProps {
   products: {
@@ -67,8 +68,11 @@ export default function Home({ products }: HomeProps) {
                   />
 
                   <footer>
-                    <strong>{product.name}</strong>
-                    <span>{product.price}</span>
+                    <div>
+                      <strong>{product.name}</strong>
+                      <span>{product.price}</span>
+                    </div>
+                    <CartButton color="green" size="large"/>
                   </footer>
                 </Product>
               </Link>
@@ -77,7 +81,7 @@ export default function Home({ products }: HomeProps) {
         </HomeContainer>
 
         <div
-          className="arrow"
+          className="arrow left"
           style={{
             visibility: currentSlide === 0 ? "hidden" : "initial",
           }}

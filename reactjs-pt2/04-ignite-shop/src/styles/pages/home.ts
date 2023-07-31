@@ -1,5 +1,6 @@
 import { styled } from "..";
 
+
 export const NavigationWrapper = styled("div", {
   maxWidth: "calc(100vw - ((100vw - 1180px) / 2))",
   marginLeft: "auto",
@@ -12,6 +13,10 @@ export const NavigationWrapper = styled("div", {
   ".arrow": {
     position: "absolute",
     cursor: "pointer",
+  },
+
+  ".arrow.left": {
+    left: 0,
   },
 
   ".arrow.right": {
@@ -60,6 +65,12 @@ export const Product = styled("div", {
     transform: "translateY(100%)",
     opacity: 0,
     transition: "all 0.2s ease-in-out",
+
+    div: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 4,
+    },
 
     strong: {
       fontSize: "$lg",
