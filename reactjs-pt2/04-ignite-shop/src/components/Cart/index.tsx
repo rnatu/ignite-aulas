@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { CartButton } from "../CartButton";
-import { CartClose, CartContent, CartFinalization, CartProduct, CartProductDetails, CartProductImage } from './styles';
+import { CartClose, CartContent, CartFinalization, CartProduct, CartProductDetails, CartProductImage, FinalizationDetails } from './styles';
 import { X } from '@phosphor-icons/react'
 import Image from 'next/image';
 
@@ -37,6 +37,16 @@ export function Cart() {
           </section>
 
           <CartFinalization>
+            <FinalizationDetails>
+              <div>
+                <span>Quantidade</span>
+                <p>2 itens</p>
+              </div>
+              <div>
+                <span>Valor total</span>
+                <p>R$ 100.00</p>
+              </div>
+            </FinalizationDetails>
             <button>Finalizar Compra</button>
           </CartFinalization>
         </CartContent>

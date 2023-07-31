@@ -105,3 +105,35 @@ export const CartFinalization = styled("div", {
     }
   },
 });
+
+export const FinalizationDetails = styled('div', {
+  display: "flex",
+  flexDirection: "column",
+  gap: 8,
+  marginBottom: 55,
+
+  div: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+
+    p: {
+      fontSize: '$md',
+      color: "$gray300",
+    },
+
+    '&:last-child': {
+      fontWeight: "bold",
+
+      span: {
+        fontSize: "$md"
+      },
+
+      p: {
+        color: "$gray100",
+        fontSize: "$xl",
+      }
+    }
+
+  }
+})
