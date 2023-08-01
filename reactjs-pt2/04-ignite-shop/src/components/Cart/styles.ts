@@ -20,6 +20,13 @@ export const CartContent = styled(Dialog.Content, {
     color: "$gray100",
     marginBottom: "2rem",
   },
+
+  '> section': {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1.5rem",
+    overflowY: "auto",
+  }
 });
 
 export const CartClose = styled(Dialog.Close, {
@@ -80,7 +87,7 @@ export const CartProductDetails = styled("div", {
   },
 });
 
-export const CartFinalization = styled("div", {
+export const CartFinalization = styled("section", {
   display: "flex",
   flexDirection: "column",
   marginTop: "auto",
