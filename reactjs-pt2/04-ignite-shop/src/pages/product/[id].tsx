@@ -1,55 +1,32 @@
+import { IProduct } from "@/contexts/CartContext";
+import { useCart } from "@/hooks/useCart";
 import { stripe } from "@/lib/stripe";
 import {
   ImageContainer,
   ProductContainer,
   ProductDetails,
 } from "@/styles/pages/product";
-import axios from "axios";
+
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+
 import Stripe from "stripe";
 
 interface ProductProps {
-  product: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: string;
-    description: string;
-    defaultPriceId: string;
-  };
+  product: IProduct;
 }
 
 export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter();
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
-
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true);
-
-      const responde = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId
-      })
-
-      const { checkoutUrl } = responde.data;
-
-      window.location.href = checkoutUrl;
-    } catch (error) {
-      // O certo aqui seria conectar com uma ferramenta de observabilidade (Datagod / Sentry)
-
-      setIsCreatingCheckoutSession(false);
-
-      alert('Falha ao redirecionar ao checkout!')
-    }
-  }
+  const { checkIfItemAlreadyExists, addToCart } = useCart();
 
   if (isFallback) {
-    return <p>Loading...</p>
+    return <p>Loading...</p>;
   }
+
+  const itemAlreadyInCart = checkIfItemAlreadyExists(product.id);
 
   return (
     <>
@@ -67,7 +44,14 @@ export default function Product({ product }: ProductProps) {
 
           <p>{product.description}</p>
 
-          <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>Comprar agora</button>
+          <button
+            disabled={itemAlreadyInCart}
+            onClick={() => addToCart(product)}
+          >
+            {itemAlreadyInCart
+              ? "Produto já esta no carrinho"
+              : "Colocar na sacola"}
+          </button>
         </ProductDetails>
       </ProductContainer>
     </>
@@ -75,20 +59,19 @@ export default function Product({ product }: ProductProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // Buscar os produtos mais vendidos / mais acessados / mais essenciais 
+  // Buscar os produtos mais vendidos / mais acessados / mais essenciais
 
   return {
-
     paths: [
       {
         params:
           //(Buscar os produtos mais vendidos / mais acessados / mais essenciais) ou deixar vazio se preferir
-          { id: "prod_OH7h4NHpkhG1Nc" }  // prod_OH7h4NHpkhG1Nc (id do produto no stripe)
-      }
+          { id: "prod_OH7h4NHpkhG1Nc" }, // prod_OH7h4NHpkhG1Nc (id do produto no stripe)
+      },
     ],
-    // fallback: false, // false -> 404
     fallback: true, // true -> executa o getStaticProps com o novo parâmetro passado (Necessita de um loader no caso)
     // fallback: "blocking", // blocking -> não carrega direciona para a página enquanto as informações estão sendo carregadas
+    // fallback: false, // false -> 404
   };
 };
 
@@ -115,6 +98,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
             style: "currency",
             currency: "BRL",
           }).format(price.unit_amount / 100), //como foi feito o expand, e a tipagem do expand para o price, ele ira trazer todas as opções no auto complete. Obs, unit_amount é em centavos.
+        numberPrice: price.unit_amount && price.unit_amount / 100,
         description: product.description,
         defaultPriceId: price.id,
       },
