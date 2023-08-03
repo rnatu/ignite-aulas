@@ -23,7 +23,7 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
-  const { addToCart } = useCart();
+  const { addToCart, checkIfItemAlreadyExists } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
@@ -36,20 +36,23 @@ export default function Home({ products }: HomeProps) {
     },
   });
 
-  function handleAddToCart(e: MouseEvent<HTMLButtonElement>, product: IProduct) {
-    e.preventDefault()
+  function handleAddToCart(
+    e: MouseEvent<HTMLButtonElement>,
+    product: IProduct
+  ) {
+    e.preventDefault();
     addToCart(product);
   }
 
   function handlePrevSlide(e: any) {
     e.stopPropagation();
     instanceRef.current?.prev();
-  };
+  }
 
   function handleNextSlide(e: any) {
     e.stopPropagation();
     instanceRef.current?.next();
-  };
+  }
 
   return (
     <>
@@ -75,7 +78,12 @@ export default function Home({ products }: HomeProps) {
                       <strong>{product.name}</strong>
                       <span>{product.price}</span>
                     </div>
-                    <CartButton color="green" size="large" onClick={(e) => handleAddToCart(e, product)} />
+                    <CartButton
+                      disabled={checkIfItemAlreadyExists(product.id)}
+                      color="green"
+                      size="large"
+                      onClick={(e) => handleAddToCart(e, product)}
+                    />
                   </footer>
                 </Product>
               </Link>
@@ -138,6 +146,8 @@ export const getStaticProps: GetStaticProps = async () => {
           currency: "BRL",
         }).format(price.unit_amount / 100),
       //como foi feito o expand, e a tipagem do expand para o price, ele ira trazer todas as opções no auto complete. Obs, unit_amount é em centavos.
+      numberPrice: price.unit_amount && price.unit_amount / 100,
+      defaultPriceId: price.id,
     };
   });
 
