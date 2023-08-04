@@ -50,11 +50,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
-  const sessionId = query.session_id[0];
+  const sessionId = query.session_id;
 
-  const session = await stripe.checkout.sessions.retrieve(sessionId, {
+  const session = await stripe.checkout.sessions.retrieve(String(sessionId), {
     expand: ["line_items", "line_items.data.price.product"],
   });
+
 
   const customerName = session.customer_details?.name;
   const product = session.line_items?.data[0].price?.product as Stripe.Product;
