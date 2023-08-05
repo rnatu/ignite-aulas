@@ -34,19 +34,23 @@ export const SuccessContainer = styled("main", {
 
     "&:hover": {
       color: "$green300",
-    }
-  }
+    },
+  },
+});
+
+export const ImagesContainer = styled("section", {
+  display: "flex",
+  alignItems: "center",
+  marginBottom: "3rem",
 });
 
 export const ImageContainer = styled("div", {
-  width: "100%",
-  maxWidth: 130,
-  height: 145,
+  width: 140,
+  height: 140,
   background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
-  marginTop: "4rem",
+  boxShadow: "0px 0px 60px rgba(0, 0, 0, 0.8)",
 
-  borderRadius: 8,
-  padding: "0.5rem",
+  borderRadius: "50%",
 
   display: "flex",
   alignItems: "center",
@@ -54,5 +58,9 @@ export const ImageContainer = styled("div", {
 
   img: {
     objectFit: "cover",
-  }
+  },
+
+  "& + div": {
+    marginLeft: "-3.25rem",
+  },
 });
