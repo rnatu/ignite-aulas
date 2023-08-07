@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import Image from "next/image";
 import { useKeenSlider } from "keen-slider/react";
@@ -26,6 +26,7 @@ interface HomeProps {
 export default function Home({ products }: HomeProps) {
   const { addToCart, checkIfItemAlreadyExists } = useCart();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     slideChanged(slider) {
@@ -36,6 +37,17 @@ export default function Home({ products }: HomeProps) {
       // spacing: 48,
     },
   });
+
+  useEffect(() => {
+    // fake loading para utilizar o skeleton loading
+    const timeOut = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, []);
 
   function handleAddToCart(
     e: MouseEvent<HTMLButtonElement>,
@@ -62,40 +74,45 @@ export default function Home({ products }: HomeProps) {
       </Head>
 
       <NavigationWrapper className="navigation-wrapper">
-        <HomeContainer ref={sliderRef} className="keen-slider">
-
-          <ProductSkeleton className="keen-slider__slide"/>
-          <ProductSkeleton className="keen-slider__slide"/>
-          <ProductSkeleton className="keen-slider__slide"/>
-          
-          {/* {products.map((product) => {
-            return (
-              <Link href={`/product/${product.id}`} key={product.id}>
-                <Product className="keen-slider__slide">
-                  <Image
-                    src={product.imageUrl}
-                    width={520}
-                    height={480}
-                    alt=""
-                  />
-
-                  <footer>
-                    <div>
-                      <strong>{product.name}</strong>
-                      <span>{product.price}</span>
-                    </div>
-                    <CartButton
-                      disabled={checkIfItemAlreadyExists(product.id)}
-                      color="green"
-                      size="large"
-                      onClick={(e) => handleAddToCart(e, product)}
+        {isLoading ? (
+          <>
+            <HomeContainer ref={sliderRef} className="keen-slider">
+              <ProductSkeleton className="keen-slider__slide" />
+              <ProductSkeleton className="keen-slider__slide" />
+              <ProductSkeleton className="keen-slider__slide" />
+            </HomeContainer>
+          </>
+        ) : (
+          <HomeContainer ref={sliderRef} className="keen-slider">
+            {products.map((product) => {
+              return (
+                <Link href={`/product/${product.id}`} key={product.id}>
+                  <Product className="keen-slider__slide">
+                    <Image
+                      src={product.imageUrl}
+                      width={520}
+                      height={480}
+                      alt=""
                     />
-                  </footer>
-                </Product>
-              </Link>
-            );
-          })} */}
-        </HomeContainer>
+
+                    <footer>
+                      <div>
+                        <strong>{product.name}</strong>
+                        <span>{product.price}</span>
+                      </div>
+                      <CartButton
+                        disabled={checkIfItemAlreadyExists(product.id)}
+                        color="green"
+                        size="large"
+                        onClick={(e) => handleAddToCart(e, product)}
+                      />
+                    </footer>
+                  </Product>
+                </Link>
+              );
+            })}
+          </HomeContainer>
+        )}
 
         <div
           className="arrow left"
