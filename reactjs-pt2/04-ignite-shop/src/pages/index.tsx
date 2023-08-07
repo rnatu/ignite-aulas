@@ -17,6 +17,7 @@ import Stripe from "stripe";
 import { CartButton } from "@/components/CartButton";
 import { useCart } from "@/hooks/useCart";
 import { IProduct } from "@/contexts/CartContext";
+import { ProductSkeleton } from "@/components/ProductSkeleton";
 
 interface HomeProps {
   products: IProduct[];
@@ -32,7 +33,7 @@ export default function Home({ products }: HomeProps) {
     },
     slides: {
       perView: 2.5,
-      spacing: 48,
+      // spacing: 48,
     },
   });
 
@@ -62,7 +63,12 @@ export default function Home({ products }: HomeProps) {
 
       <NavigationWrapper className="navigation-wrapper">
         <HomeContainer ref={sliderRef} className="keen-slider">
-          {products.map((product) => {
+
+          <ProductSkeleton className="keen-slider__slide"/>
+          <ProductSkeleton className="keen-slider__slide"/>
+          <ProductSkeleton className="keen-slider__slide"/>
+          
+          {/* {products.map((product) => {
             return (
               <Link href={`/product/${product.id}`} key={product.id}>
                 <Product className="keen-slider__slide">
@@ -88,7 +94,7 @@ export default function Home({ products }: HomeProps) {
                 </Product>
               </Link>
             );
-          })}
+          })} */}
         </HomeContainer>
 
         <div

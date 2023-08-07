@@ -1,8 +1,7 @@
 import { styled } from "..";
 
-
 export const NavigationWrapper = styled("div", {
-  maxWidth: "calc(100vw - ((100vw - 1180px) / 2))",
+  width: "calc(100vw - ((100vw - 1180px) / 2))",
   marginLeft: "auto",
 
   display: "flex",
@@ -27,7 +26,10 @@ export const NavigationWrapper = styled("div", {
 export const HomeContainer = styled("main", {
   display: "flex",
   width: "100%",
-  minHeight: "656",
+  minHeight: 656,
+  gap: "48px",
+
+  
 });
 
 export const Product = styled("div", {
@@ -74,7 +76,7 @@ export const Product = styled("div", {
 
     strong: {
       fontSize: "$lg",
-      color: '$gray100'
+      color: "$gray100",
     },
 
     span: {
