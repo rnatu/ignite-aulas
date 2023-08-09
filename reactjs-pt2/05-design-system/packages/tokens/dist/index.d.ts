@@ -1,18 +1,18 @@
 declare const colors: {
-    white: string;
-    black: string;
-    gray100: string;
-    gray200: string;
-    gray400: string;
-    gray500: string;
-    gray600: string;
-    gray700: string;
-    gray800: string;
-    gray900: string;
-    ignite300: string;
-    ignite500: string;
-    ignite700: string;
-    ignite900: string;
+    readonly white: "#FFF";
+    readonly black: "#000";
+    readonly gray100: "#E1E1E6";
+    readonly gray200: "#A9A9B2";
+    readonly gray400: "#7C7C8A";
+    readonly gray500: "#505059";
+    readonly gray600: "#323238";
+    readonly gray700: "#29292E";
+    readonly gray800: "#202024";
+    readonly gray900: "#121214";
+    readonly ignite300: "#00B37E";
+    readonly ignite500: "#00875F";
+    readonly ignite700: "#015F43";
+    readonly ignite900: "#00291D";
 };
 
 declare const space: {
@@ -48,19 +48,19 @@ declare const fonts: {
 };
 
 declare const fontSizes: {
-    xxs: string;
-    xs: string;
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-    '2xl': string;
-    '4xl': string;
-    '5xl': string;
-    '6xl': string;
-    '7xl': string;
-    '8xl': string;
-    '9xl': string;
+    readonly xxs: "0.625rem";
+    readonly xs: "0.75rem";
+    readonly sm: "0.875rem";
+    readonly md: "1rem";
+    readonly lg: "1.125rem";
+    readonly xl: "1.25rem";
+    readonly '2xl': "1.5rem";
+    readonly '4xl': "2rem";
+    readonly '5xl': "2.25rem";
+    readonly '6xl': "3rem";
+    readonly '7xl': "4rem";
+    readonly '8xl': "4.5rem";
+    readonly '9xl': "6rem";
 };
 
 declare const fontWeights: {
