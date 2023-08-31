@@ -8,6 +8,13 @@ export default {
     src: 'https://github.com/rnatu.png',
     alt: 'Renato Xavier',
   },
+  argTypes: {
+    src: {
+      control: {
+        type: 'text',
+      },
+    },
+  },
 } as Meta<AvatarProps>
 
 export const Primary: StoryObj<AvatarProps> = {}
