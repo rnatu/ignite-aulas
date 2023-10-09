@@ -64,6 +64,7 @@ export function Home() {
           </Text>
         )}
       />
+      
 
       {/* <ScrollView showsVerticalScrollIndicator={false}>
         {participants.map((participant) => (
