@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Alert,
 } from "react-native";
 import { styles } from "./styles";
 import { Participant } from "../../components/Participant";
@@ -23,10 +24,26 @@ export function Home() {
   ];
 
   function handleParticipantAdd() {
+    if (participants.includes("Rodrigo")) {
+      return Alert.alert(
+        "Participante Existe",
+        "Já existe um participante na lista com esse nome"
+      );
+    }
     console.log("Voce clicou no botão de adicionar!");
   }
 
   function handleParticipantRemove(name: string) {
+    Alert.alert("Remover", `Remover o participante ${name}?`, [
+      {
+        text: 'Sim',
+        onPress: () => Alert.alert("Deletado!")
+      },
+      {
+        text: 'Não',
+        style: "cancel"
+      }
+    ]);
     console.log(`Voce clicou em remover o participante ${name}`);
   }
 
@@ -60,11 +77,11 @@ export function Home() {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <Text style={styles.listEmptyText}>
-            Ninguém chegou no evento ainda? Adicione participantes a sua lista de presença.
+            Ninguém chegou no evento ainda? Adicione participantes a sua lista
+            de presença.
           </Text>
         )}
       />
-      
 
       {/* <ScrollView showsVerticalScrollIndicator={false}>
         {participants.map((participant) => (
