@@ -9,19 +9,10 @@ import {
 } from "react-native";
 import { styles } from "./styles";
 import { Participant } from "../../components/Participant";
+import { useState } from "react";
 
 export function Home() {
-  const participants = [
-    "Rodrigo",
-    "Vini",
-    "Diego",
-    "Biro",
-    "Renato ",
-    "Felipe",
-    "Thiago",
-    "Aline",
-    "Gabriela",
-  ];
+  const [participants, setParticipants] = useState(["João"]);
 
   function handleParticipantAdd() {
     if (participants.includes("Rodrigo")) {
@@ -30,19 +21,20 @@ export function Home() {
         "Já existe um participante na lista com esse nome"
       );
     }
-    console.log("Voce clicou no botão de adicionar!");
+
+    setParticipants((prevState) => [...prevState, 'Ana']);
   }
 
   function handleParticipantRemove(name: string) {
     Alert.alert("Remover", `Remover o participante ${name}?`, [
       {
-        text: 'Sim',
-        onPress: () => Alert.alert("Deletado!")
+        text: "Sim",
+        onPress: () => Alert.alert("Deletado!"),
       },
       {
-        text: 'Não',
-        style: "cancel"
-      }
+        text: "Não",
+        style: "cancel",
+      },
     ]);
     console.log(`Voce clicou em remover o participante ${name}`);
   }
