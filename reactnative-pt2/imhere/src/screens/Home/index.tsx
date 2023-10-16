@@ -16,6 +16,10 @@ export function Home() {
   const [participantName, setParticipantName] = useState("");
 
   function handleParticipantAdd() {
+    if (participantName === "") {
+      return Alert.alert("Sem nome", "Insira o nome de um participante");
+    }
+
     if (participants.includes(participantName)) {
       return Alert.alert(
         "Participante Existe",
@@ -28,12 +32,13 @@ export function Home() {
   }
 
   function handleParticipantRemove(name: string) {
-
-
     Alert.alert("Remover", `Remover o participante ${name}?`, [
       {
         text: "Sim",
-        onPress: () => setParticipants(prevState => prevState.filter(participant => participant !== name)),
+        onPress: () =>
+          setParticipants((prevState) =>
+            prevState.filter((participant) => participant !== name)
+          ),
       },
       {
         text: "Não",
